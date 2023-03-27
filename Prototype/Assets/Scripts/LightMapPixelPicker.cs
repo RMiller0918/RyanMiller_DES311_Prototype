@@ -64,7 +64,7 @@ public class LightMapPixelPicker : MonoBehaviour
 
         // GET LIGHTMAP COORDINATE WHERE RAYCAST HITS
         Vector2 pixelUV = hitInfo.lightmapCoord;
-        Debug.Log(pixelUV);
+        //Debug.Log(pixelUV);
         // GET COLOR AT THE LIGHTMAP COORDINATE
         Color surfaceColor = lightmapTex.GetPixelBilinear(pixelUV.x, pixelUV.y);
         FindRealtimeLightmapUV(pixelUV);
