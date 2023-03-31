@@ -24,10 +24,15 @@ public class SpotlightScript : MonoBehaviour
     {
         _outsideAngle = _light.spotAngle / 2;
         _angleAxisUp = new Vector3(0, _transform.rotation.y, 0);
+        DrawRays();
+    }
+
+    private void DrawRays()
+    {
         var Ray = new Ray();
         Ray.origin = _transform.position;
         Ray.direction = (Quaternion.AngleAxis(_outsideAngle, _transform.up) * transform.forward) * _light.range;
-        Debug.DrawLine(Ray.origin, Ray.origin + Ray.direction * _light.range,Color.green);
+        Debug.DrawLine(Ray.origin, Ray.origin + Ray.direction * _light.range, Color.green);
         Ray.direction = (Quaternion.AngleAxis(-_outsideAngle, _transform.up) * transform.forward) * _light.range;
         Debug.DrawLine(Ray.origin, Ray.origin + Ray.direction * _light.range, Color.green);
     }
@@ -43,13 +48,11 @@ public class SpotlightScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider oCollider)
     {
-        Debug.Log(oCollider.transform);
         CalculateDot(oCollider.transform);
     }
 
     private void OnTriggerStay(Collider oCollider)
     {
-        Debug.Log(oCollider.transform);
         CalculateDot(oCollider.transform);
     }
 
