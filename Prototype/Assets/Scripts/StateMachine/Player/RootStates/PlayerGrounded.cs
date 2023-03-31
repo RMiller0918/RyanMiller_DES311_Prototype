@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerRun : PlayerBaseState
+public class PlayerGrounded : PlayerBaseState, IGravity
 {
-    public PlayerRun(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-        : base(currentContext, playerStateFactory) { }
+    public PlayerGrounded(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+        : base(currentContext, playerStateFactory)
+    {
+        _isRootState = true;
+    }
 
     public override void EnterState()
     {
-
+        HandleGravity();
     }
 
     public override void UpdateState()
@@ -28,6 +31,11 @@ public class PlayerRun : PlayerBaseState
     }
 
     public override void CheckSwitchState()
+    {
+
+    }
+
+    public void HandleGravity()
     {
 
     }
