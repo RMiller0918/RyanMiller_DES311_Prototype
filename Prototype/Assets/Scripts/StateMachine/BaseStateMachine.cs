@@ -1,6 +1,7 @@
 public abstract class BaseState
 {
     protected bool _isRootState = false;
+    protected bool _isSwitchingState = false;
 
     public abstract void EnterState();
     public abstract void UpdateState();
@@ -57,7 +58,7 @@ public abstract class PlayerBaseState: BaseState
         }
         else if (_currentSuperState != null)
         {
-            //Set the current super states Sub state to the new state
+            //the new state becomes a substate to the above layer in hierarchy.
             _currentSuperState.SetSubState(newState);
         }
     }

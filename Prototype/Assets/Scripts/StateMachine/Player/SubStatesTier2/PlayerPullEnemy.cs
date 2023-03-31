@@ -2,22 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWalk : PlayerBaseState, IMoveable
+public class PlayerPullEnemy : PlayerBaseState
 {
-    private int _moveSpeed;
-
-    public PlayerWalk(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-        : base(currentContext, playerStateFactory)
-    {
-    }
+    public PlayerPullEnemy(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+        : base(currentContext, playerStateFactory) { }
 
     public override void EnterState()
     {
+
     }
 
     public override void UpdateState()
     {
-
+        ExitState();
     }
 
     public override void ExitState()
@@ -31,11 +28,6 @@ public class PlayerWalk : PlayerBaseState, IMoveable
     }
 
     public override void CheckSwitchState()
-    {
-
-    }
-
-    public void Moving()
     {
 
     }

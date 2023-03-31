@@ -29,28 +29,55 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""4f89544f-410f-42dc-ab0b-a8ed729d488e"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
+                    ""name"": ""MouseX"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""c470fd07-8780-44b7-8ce5-ee0ba06eff39"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse Y"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""654d1a42-17f6-481a-9e3e-a1f150e2cedc"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""34bf43df-806a-449d-9a2f-268f6884f026"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""493ef91d-b8a4-45d2-8fe0-1c17134915e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""56269700-6aae-418e-aa71-af372285930b"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -61,7 +88,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Up"",
                     ""id"": ""05c1e057-b9fa-4bdf-82ca-3d1e04d18a39"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -72,7 +99,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Down"",
                     ""id"": ""944429fb-23a7-46f6-9a5a-ebdea121b8ba"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -103,92 +130,48 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Forward"",
-                    ""id"": ""1d5dff0a-db25-4fa0-9706-b1a2dfec567b"",
-                    ""path"": ""<Keyboard>/w"",
+                    ""name"": """",
+                    ""id"": ""22d84691-e0f6-43de-8486-d8543ac3a7d6"",
+                    ""path"": ""<Mouse>/delta/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
+                    ""action"": ""MouseX"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Backward"",
-                    ""id"": ""7a79e406-4e19-48c4-82c0-7ca31d67ad45"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Up Down"",
-                    ""id"": ""e9ed6e5b-2b6f-47b9-80d5-63a9afbd8e7f"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""526efde4-0445-457d-8910-799c038b5827"",
-                    ""path"": ""<Mouse>/delta/down"",
+                    ""name"": """",
+                    ""id"": ""27531480-759f-4933-bd07-037bf144eec6"",
+                    ""path"": ""<Mouse>/delta/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""Mouse Y"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""8af97b3f-5e6d-4a2d-a3b0-e394889f487b"",
-                    ""path"": ""<Mouse>/delta/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Left Right"",
-                    ""id"": ""58d1e39e-fadd-44df-899f-091b69de5a5a"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""negative"",
-                    ""id"": ""bc727a8e-e20c-42a7-bd4b-f70e620b0711"",
-                    ""path"": ""<Mouse>/delta/left"",
+                    ""name"": """",
+                    ""id"": ""c78f080b-00ea-491f-9f0a-0737ccfb83d5"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""Sprint"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""positive"",
-                    ""id"": ""fdc320bd-435d-403a-8717-c55d3371815f"",
-                    ""path"": ""<Mouse>/delta/right"",
+                    ""name"": """",
+                    ""id"": ""4350ace1-b4c7-496d-8b04-9c4236e8b848"",
+                    ""path"": ""<Keyboard>/ctrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""Crouch"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -198,7 +181,10 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // MainControls
         m_MainControls = asset.FindActionMap("MainControls", throwIfNotFound: true);
         m_MainControls_Move = m_MainControls.FindAction("Move", throwIfNotFound: true);
-        m_MainControls_Look = m_MainControls.FindAction("Look", throwIfNotFound: true);
+        m_MainControls_MouseX = m_MainControls.FindAction("MouseX", throwIfNotFound: true);
+        m_MainControls_MouseY = m_MainControls.FindAction("Mouse Y", throwIfNotFound: true);
+        m_MainControls_Sprint = m_MainControls.FindAction("Sprint", throwIfNotFound: true);
+        m_MainControls_Crouch = m_MainControls.FindAction("Crouch", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -259,13 +245,19 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MainControls;
     private IMainControlsActions m_MainControlsActionsCallbackInterface;
     private readonly InputAction m_MainControls_Move;
-    private readonly InputAction m_MainControls_Look;
+    private readonly InputAction m_MainControls_MouseX;
+    private readonly InputAction m_MainControls_MouseY;
+    private readonly InputAction m_MainControls_Sprint;
+    private readonly InputAction m_MainControls_Crouch;
     public struct MainControlsActions
     {
         private @PlayerControls m_Wrapper;
         public MainControlsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_MainControls_Move;
-        public InputAction @Look => m_Wrapper.m_MainControls_Look;
+        public InputAction @MouseX => m_Wrapper.m_MainControls_MouseX;
+        public InputAction @MouseY => m_Wrapper.m_MainControls_MouseY;
+        public InputAction @Sprint => m_Wrapper.m_MainControls_Sprint;
+        public InputAction @Crouch => m_Wrapper.m_MainControls_Crouch;
         public InputActionMap Get() { return m_Wrapper.m_MainControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -278,9 +270,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMove;
-                @Look.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnLook;
+                @MouseX.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseX;
+                @MouseX.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseX;
+                @MouseX.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseX;
+                @MouseY.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseY;
+                @MouseY.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseY;
+                @MouseY.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseY;
+                @Sprint.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnSprint;
+                @Crouch.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnCrouch;
             }
             m_Wrapper.m_MainControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -288,9 +289,18 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Look.started += instance.OnLook;
-                @Look.performed += instance.OnLook;
-                @Look.canceled += instance.OnLook;
+                @MouseX.started += instance.OnMouseX;
+                @MouseX.performed += instance.OnMouseX;
+                @MouseX.canceled += instance.OnMouseX;
+                @MouseY.started += instance.OnMouseY;
+                @MouseY.performed += instance.OnMouseY;
+                @MouseY.canceled += instance.OnMouseY;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
             }
         }
     }
@@ -298,6 +308,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface IMainControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
+        void OnMouseX(InputAction.CallbackContext context);
+        void OnMouseY(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
     }
 }

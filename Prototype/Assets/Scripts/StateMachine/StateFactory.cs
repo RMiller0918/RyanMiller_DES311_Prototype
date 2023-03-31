@@ -7,12 +7,18 @@ enum PlayerStates
     run,
     grounded,
     jump,
+    falling,
+    attack,
+    rangedattack,
     teleport,
+    pullenemy,
+    healing
 }
+
 public class PlayerStateFactory
 {
     PlayerStateMachine _context;
-    private Dictionary<PlayerStates, PlayerBaseState> _states = new Dictionary<PlayerStates, PlayerBaseState>();
+    Dictionary<PlayerStates, PlayerBaseState> _states = new Dictionary<PlayerStates, PlayerBaseState>();
 
     public PlayerStateFactory(PlayerStateMachine currentContext)
     {
@@ -20,8 +26,14 @@ public class PlayerStateFactory
         _states[PlayerStates.idle] = new PlayerIdle(_context, this);
         _states[PlayerStates.walk] = new PlayerWalk(_context, this);
         _states[PlayerStates.run] = new PlayerRun(_context, this);
+        _states[PlayerStates.grounded] = new PlayerGrounded(_context, this);
         _states[PlayerStates.jump] = new PlayerJump(_context, this);
+        _states[PlayerStates.falling] = new PlayerFalling(_context, this);
+        _states[PlayerStates.attack] = new PlayerAttack(_context, this);
+        _states[PlayerStates.rangedattack] = new PlayerRangedAttack(_context, this);
         _states[PlayerStates.teleport] = new PlayerTeleport(_context, this);
+        _states[PlayerStates.pullenemy] = new PlayerPullEnemy(_context, this);
+        _states[PlayerStates.healing] = new PlayerHealing(_context, this);
     }
 
     public PlayerBaseState Idle()
@@ -49,9 +61,34 @@ public class PlayerStateFactory
         return _states[PlayerStates.jump];
     }
 
+    public PlayerBaseState Falling()
+    {
+        return _states[PlayerStates.falling];
+    }
+
+    public PlayerBaseState Attack()
+    {
+        return _states[PlayerStates.attack];
+    }
+
+    public PlayerBaseState RangedAttack()
+    {
+        return _states[PlayerStates.rangedattack];
+    }
+
     public PlayerBaseState Teleport()
     {
         return _states[PlayerStates.teleport];
+    }
+
+    public PlayerBaseState PullEnemy()
+    {
+        return _states[PlayerStates.pullenemy];
+    }
+
+    public PlayerBaseState Healing()
+    {
+        return _states[PlayerStates.healing];
     }
 }
 

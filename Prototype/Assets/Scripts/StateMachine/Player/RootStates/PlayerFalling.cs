@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTeleport : PlayerBaseState
+public class PlayerFalling : PlayerBaseState
 {
-    public PlayerTeleport(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-        : base(currentContext, playerStateFactory) { }
+    public PlayerFalling(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+        : base(currentContext, playerStateFactory)
+    {
+    }
 
     public override void EnterState()
     {

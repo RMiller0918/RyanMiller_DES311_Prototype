@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
 public class PlayerStateMachine : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private PlayerControls _playerControls;
     [field: SerializeField] public PlayerBaseState CurrentState { get; set; }
-    [SerializeField] private CharacterController _characterController;
+    [SerializeField] private PlayerStateFactory _factory;
+    [field: SerializeField] public CharacterController CharCont { get; private set; }
 
     [field: Header("Player Stats")]
     [field: SerializeField] [field: Range(100,500)] public int Health { get; private set; }
@@ -13,24 +14,37 @@ public class PlayerStateMachine : MonoBehaviour
     [field: Header("Animation")]
     [field: SerializeField] public Animator Animator { get; private set; }
     [field: SerializeField] public int AnimationHash { get; private set; }
-    [field: SerializeField] public GameObject Camera { get; private set; }
+    [field: SerializeField] public Vector2 MoveInput { get; private set; }
 
-    [SerializeField] private Vector3 _moveVector;
-
+    [field: Header("State Booleans")]
+    [field: SerializeField] public bool Moving { get; private set; }
+    [field: SerializeField] public bool Sprinting { get; private set; }
+    [field: SerializeField] public bool Crouching { get; private set; }
+    [field: SerializeField] public bool Grounded { get; private set; }
     private void Awake()
     {
+        Animator = GetComponentInChildren<Animator>();
+        CharCont = GetComponent<CharacterController>();
+
         _playerControls = new PlayerControls();
 
-        _playerControls.MainControls.Move.performed += MoveCallback;
-        _playerControls.MainControls.Move.started += MoveCallback;
-        _playerControls.MainControls.Move.canceled += MoveCallback;
+        _playerControls.MainControls.Move.performed += OnMovementInput;
+        _playerControls.MainControls.Move.started += OnMovementInput;
+        _playerControls.MainControls.Move.canceled += OnMovementInput;
+        _playerControls.MainControls.Sprint.performed += ctx => Sprinting = ctx.ReadValueAsButton();
+
+        _factory = new PlayerStateFactory(this);
+        CurrentState = _factory.Grounded();
+        CurrentState.EnterState();
     }
 
-    private void MoveCallback(InputAction.CallbackContext context)
+    #region Callbacks
+    private void OnMovementInput(InputAction.CallbackContext context)
     {
-        _moveVector = context.ReadValue<Vector3>();
+        MoveInput = context.ReadValue<Vector2>();
+        Moving = MoveInput.x != 0 || MoveInput.y != 0;
     }
-
+#endregion
     // Start is called before the first frame update
     private void Start()
     {
@@ -40,7 +54,7 @@ public class PlayerStateMachine : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        _characterController.Move(_moveVector * Time.deltaTime);
+        CurrentState.UpdateStates();
     }
 
     private void OnEnable()

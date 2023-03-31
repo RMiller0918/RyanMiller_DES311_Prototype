@@ -1,12 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
 using UnityEngine;
 
-public class PlayerIdle : PlayerBaseState
+public class PlayerTeleport : PlayerBaseState
 {
-    public PlayerIdle(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-    :base(currentContext, playerStateFactory){}
+    public PlayerTeleport(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
+        : base(currentContext, playerStateFactory) { }
 
     public override void EnterState()
     {
@@ -15,7 +14,7 @@ public class PlayerIdle : PlayerBaseState
 
     public override void UpdateState()
     {
-
+        ExitState();
     }
 
     public override void ExitState()

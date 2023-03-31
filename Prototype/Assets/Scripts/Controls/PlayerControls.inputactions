@@ -7,28 +7,55 @@
             "actions": [
                 {
                     "name": "Move",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "4f89544f-410f-42dc-ab0b-a8ed729d488e",
-                    "expectedControlType": "Vector3",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Look",
-                    "type": "Value",
+                    "name": "MouseX",
+                    "type": "PassThrough",
                     "id": "c470fd07-8780-44b7-8ce5-ee0ba06eff39",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Mouse Y",
+                    "type": "PassThrough",
+                    "id": "654d1a42-17f6-481a-9e3e-a1f150e2cedc",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprint",
+                    "type": "PassThrough",
+                    "id": "34bf43df-806a-449d-9a2f-268f6884f026",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouch",
+                    "type": "PassThrough",
+                    "id": "493ef91d-b8a4-45d2-8fe0-1c17134915e3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "Keyboard",
                     "id": "56269700-6aae-418e-aa71-af372285930b",
-                    "path": "3DVector",
+                    "path": "2DVector",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -39,7 +66,7 @@
                 {
                     "name": "Up",
                     "id": "05c1e057-b9fa-4bdf-82ca-3d1e04d18a39",
-                    "path": "",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -50,7 +77,7 @@
                 {
                     "name": "Down",
                     "id": "944429fb-23a7-46f6-9a5a-ebdea121b8ba",
-                    "path": "",
+                    "path": "<Keyboard>/s",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -81,92 +108,48 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Forward",
-                    "id": "1d5dff0a-db25-4fa0-9706-b1a2dfec567b",
-                    "path": "<Keyboard>/w",
+                    "name": "",
+                    "id": "22d84691-e0f6-43de-8486-d8543ac3a7d6",
+                    "path": "<Mouse>/delta/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Move",
+                    "action": "MouseX",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Backward",
-                    "id": "7a79e406-4e19-48c4-82c0-7ca31d67ad45",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Up Down",
-                    "id": "e9ed6e5b-2b6f-47b9-80d5-63a9afbd8e7f",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "526efde4-0445-457d-8910-799c038b5827",
-                    "path": "<Mouse>/delta/down",
+                    "name": "",
+                    "id": "27531480-759f-4933-bd07-037bf144eec6",
+                    "path": "<Mouse>/delta/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
+                    "action": "Mouse Y",
                     "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "8af97b3f-5e6d-4a2d-a3b0-e394889f487b",
-                    "path": "<Mouse>/delta/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "Left Right",
-                    "id": "58d1e39e-fadd-44df-899f-091b69de5a5a",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Look",
-                    "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "negative",
-                    "id": "bc727a8e-e20c-42a7-bd4b-f70e620b0711",
-                    "path": "<Mouse>/delta/left",
+                    "name": "",
+                    "id": "c78f080b-00ea-491f-9f0a-0737ccfb83d5",
+                    "path": "<Keyboard>/shift",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
+                    "action": "Sprint",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 },
                 {
-                    "name": "positive",
-                    "id": "fdc320bd-435d-403a-8717-c55d3371815f",
-                    "path": "<Mouse>/delta/right",
+                    "name": "",
+                    "id": "4350ace1-b4c7-496d-8b04-9c4236e8b848",
+                    "path": "<Keyboard>/ctrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Look",
+                    "action": "Crouch",
                     "isComposite": false,
-                    "isPartOfComposite": true
+                    "isPartOfComposite": false
                 }
             ]
         }
