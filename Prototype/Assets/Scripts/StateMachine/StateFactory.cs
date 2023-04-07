@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-enum PlayerStates
+internal enum PlayerStates
 {
     idle,
     walk,
@@ -12,7 +12,8 @@ enum PlayerStates
     rangedattack,
     teleport,
     pullenemy,
-    healing
+    healing,
+    empty
 }
 
 public class PlayerStateFactory
@@ -34,6 +35,7 @@ public class PlayerStateFactory
         _states[PlayerStates.teleport] = new PlayerTeleport(_context, this);
         _states[PlayerStates.pullenemy] = new PlayerPullEnemy(_context, this);
         _states[PlayerStates.healing] = new PlayerHealing(_context, this);
+        _states[PlayerStates.empty] = new PlayerDefault(_context, this);
     }
 
     public PlayerBaseState Idle()
@@ -90,9 +92,33 @@ public class PlayerStateFactory
     {
         return _states[PlayerStates.healing];
     }
+
+    public PlayerBaseState Empty() //Only used to switch to the other tier 2 states.
+    {
+        return _states[PlayerStates.empty];
+    }
+}
+
+internal enum EnemyStates
+{
+    stunned,
+    unsuspicious,
+    suspicious,
+    alerted,
+    idle,
+    walk,
+    run,
+    attack,
+    heal,
 }
 
 public class EnemyStateFactory
 {
     EnemyStateMachine _context;
+    Dictionary<EnemyStates, EnemyBaseState> _states = new Dictionary<EnemyStates, EnemyBaseState>();
+
+    public EnemyStateFactory(EnemyStateMachine currentContext)
+    {
+        _context = currentContext;
+    }
 }

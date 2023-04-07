@@ -9,13 +9,16 @@ public class PlayerIdle : PlayerBaseState
 
     public override void EnterState()
     {
-        Debug.Log("Idle State");
+        //Debug.Log("Idle State");
         _isSwitchingState = false;
+        InitializeSubState();
+        //Debug.Log("Entered Idle State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()
     {
         CheckSwitchState();
+        StopMoving();
     }
 
     public override void ExitState()
@@ -25,7 +28,27 @@ public class PlayerIdle : PlayerBaseState
 
     public override void InitializeSubState()
     {
-
+        switch (true)
+        {
+            case var playerCtx when _ctx.Attacking && !_ctx.Aiming:
+                SetSubState(_factory.Attack());
+                break;
+            case var playerCtx when _ctx.Aiming:
+                SetSubState(_factory.RangedAttack());
+                break;
+            case var playerCtx when _ctx.TeleportSetUp:
+                SetSubState(_factory.Teleport());
+                break;
+            case var playerCtx when _ctx.PullEnemySetUp:
+                SetSubState(_factory.PullEnemy());
+                break;
+            case var playerCtx when _ctx.Healing:
+                SetSubState(_factory.Healing());
+                break;
+            default:
+                SetSubState(_factory.Empty());
+                break;
+        }
     }
 
     public override void CheckSwitchState()
@@ -35,5 +58,12 @@ public class PlayerIdle : PlayerBaseState
             SwitchState(_factory.Walk());
             _isSwitchingState = true;
         }
+    }
+
+    private void StopMoving()
+    {
+        if (_ctx.MoveVelocityX == 0 && _ctx.MoveVelocityZ == 0) return;
+        _ctx.MoveVelocityX = 0;
+        _ctx.MoveVelocityZ = 0;
     }
 }

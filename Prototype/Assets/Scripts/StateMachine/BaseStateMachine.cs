@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public abstract class BaseState
 {
     protected bool _isRootState = false;
@@ -9,7 +11,6 @@ public abstract class BaseState
     public abstract void CheckSwitchState();
     public abstract void InitializeSubState();
 }
-
 public abstract class PlayerBaseState: BaseState
 {
     protected PlayerStateMachine _ctx;
@@ -27,9 +28,9 @@ public abstract class PlayerBaseState: BaseState
     public void UpdateStates()
     {
         UpdateState();
-        if (_currentSubState != null)
+        if (_currentSubState != null) //update every sub state in the hierarchy
         {
-            _currentSubState.UpdateState();
+            _currentSubState.UpdateStates();
         }
     }
 
@@ -39,7 +40,7 @@ public abstract class PlayerBaseState: BaseState
         ExitState();
         if (_currentSubState != null)
         {
-            _currentSubState.ExitState();
+            _currentSubState.ExitStates();
         }
     }
 
@@ -74,6 +75,7 @@ public abstract class PlayerBaseState: BaseState
     {
         _currentSubState = newSubState;
         newSubState.SetSuperState(this);
+        newSubState.EnterState();
     }
 }
 
@@ -96,7 +98,7 @@ public abstract class EnemyBaseState : BaseState
         UpdateState();
         if (_currentSubState != null)
         {
-            _currentSubState.UpdateState();
+            _currentSubState.UpdateStates();
         }
     }
 
@@ -106,7 +108,7 @@ public abstract class EnemyBaseState : BaseState
         ExitState();
         if (_currentSubState != null)
         {
-            _currentSubState.ExitState();
+            _currentSubState.ExitStates();
         }
     }
 

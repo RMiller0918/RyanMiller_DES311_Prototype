@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerGrounded : PlayerBaseState, IGravity
 {
+    private float _groundedGravity = -0.5f;
     public PlayerGrounded(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory)
     {
@@ -12,18 +13,21 @@ public class PlayerGrounded : PlayerBaseState, IGravity
 
     public override void EnterState()
     {
-        HandleGravity();
+        _ctx.IsJumping = false;
+        SetUpGravity();
         InitializeSubState();
+        HandleGravity();
+        //Debug.Log("Entered Grounded State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()
     {
-
+        CheckSwitchState();
     }
 
     public override void ExitState()
     {
-
+        
     }
 
     public override void InitializeSubState()
@@ -44,10 +48,23 @@ public class PlayerGrounded : PlayerBaseState, IGravity
 
     public override void CheckSwitchState()
     {
+        if (_ctx.Jumping && !_ctx.NewJumpRequired)
+        {
+            //Debug.Log("Switching to Jump State");
+            SwitchState(_factory.Jump());
+        }
+        if(!_ctx.CharCont.isGrounded)
+            SwitchState(_factory.Falling());
     }
 
     public void HandleGravity()
     {
+        _ctx.MoveVelocityY = _ctx.Gravity;
+        _ctx.AppliedMoveVelocityY = _ctx.Gravity;
+    }
 
+    private void SetUpGravity()
+    {
+        _ctx.Gravity = _groundedGravity;
     }
 }
