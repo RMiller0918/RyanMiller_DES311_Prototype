@@ -9,10 +9,8 @@ public class PlayerIdle : PlayerBaseState
 
     public override void EnterState()
     {
-        //Debug.Log("Idle State");
         _isSwitchingState = false;
         InitializeSubState();
-        //Debug.Log("Entered Idle State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()

@@ -14,7 +14,8 @@ public class RangedBolt : MonoBehaviour
         _damageValue = 10;
     }
 
-    // Update is called once per frame
+
+    //If there is no hit returned on the bolt, Destroy the game object when the destroy timer has been reached.
     private void Update()
     {
         MoveBolt();
@@ -22,24 +23,24 @@ public class RangedBolt : MonoBehaviour
         if (_destroyTimer >= DESTROYTIME)
             DestroyBolt();
     }
-    private void MoveBolt()
+    private void MoveBolt() //Moves to the current forward transform.
     {
         var moveVector = new Vector3(0, 0, _launchSpeed * Time.deltaTime);
         transform.position += transform.TransformVector(moveVector);
         transform.Rotate(Vector3.forward,10f * Time.deltaTime);
     }
 
-    private void Timer()
+    private void Timer() //Update timer
     {
         _destroyTimer += 1f * Time.deltaTime;
     }
 
-    private void DestroyBolt()
+    private void DestroyBolt() //Destroy this object.
     {
             Destroy(this.gameObject);
     }
 
-
+    //Check if the bolt has hit the player or anything else. 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
@@ -51,7 +52,8 @@ public class RangedBolt : MonoBehaviour
         CheckForDamageable(other.gameObject);
     }
 
-    private void CheckForDamageable(GameObject other)
+    //Checks for a damageable component on the object it has hit. If an component is returned then the object runs it's own HandleDamage function. Use of IDamageable interface.
+    private void CheckForDamageable(GameObject other) 
     {
         IDamageable damageable = other.GetComponent<IDamageable>();
         Debug.Log(damageable);
@@ -60,5 +62,6 @@ public class RangedBolt : MonoBehaviour
             Debug.Log("Handling Damage");
             damageable.HandleDamage(_damageValue);
         }
+        DestroyBolt();
     }
 }

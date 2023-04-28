@@ -12,10 +12,8 @@ public class PlayerWalk : PlayerBaseState, IMoveable
 
     public override void EnterState()
     {
-        Debug.Log("Walk State");
         _isSwitchingState = false;
         InitializeSubState();
-        Debug.Log("Entered Walk State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()
@@ -23,7 +21,6 @@ public class PlayerWalk : PlayerBaseState, IMoveable
         CheckSwitchState();
         if (_isSwitchingState)
         {
-            //Debug.Log("Blocking Walking after Switch. Switching State: " + _isSwitchingState);
             return;
         }
         Moving();

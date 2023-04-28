@@ -21,7 +21,7 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public Animator Animator { get; private set; }
     [field: SerializeField] public int RangeSetUpHash { get; private set; }
     [field: SerializeField] public int RangeFireTriggerHash { get; private set; }
-
+    [field: SerializeField] public int MeleeHash { get; private set; }
     [field: SerializeField] public Vector2 MoveInput { get; private set; }
 
     [field: Header("State Booleans")]
@@ -63,28 +63,46 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public Vector3 AppliedMoveVelocity;
     [field: SerializeField] public float AppliedMoveVelocityY { get => AppliedMoveVelocity.y; set => AppliedMoveVelocity.y = value; }
 
+    [field: Header("Ranged")]
     [field: SerializeField] public RangedMainOrbScript OrbScript { get; private set; }
     [field: SerializeField] public GameObject BoltPrefab { get; private set; }
     [field: SerializeField] public Transform BoltTransform { get; private set; }
+    [field: SerializeField] public bool BoltFired { get; set; }
+
+    [Header("Attacks")] 
+    [SerializeField] public int MeleeCountHash; 
+    [field: SerializeField] public int MeleeCount { get; set; }
+    [field: SerializeField] public GameObject[] MeleeColliders { get; private set; }
+
 
     private void Awake()
     {
         Animator = GetComponentInChildren<Animator>();
         RangeSetUpHash = Animator.StringToHash("RangeSetup");
         RangeFireTriggerHash = Animator.StringToHash("FireRangeBolt");
-        CharCont = GetComponent<CharacterController>();
+        MeleeHash = Animator.StringToHash("Melee");
+        MeleeCountHash = Animator.StringToHash("MeleeCount");
+        CharCont = GetComponent < CharacterController>();
         MainCamera = Camera.main.transform;
         _playerControls = new PlayerControls();
 
         _playerControls.MainControls.Move.performed += OnMovementInput;
         _playerControls.MainControls.Move.started += OnMovementInput;
         _playerControls.MainControls.Move.canceled += OnMovementInput;
-        _playerControls.MainControls.Jump.performed += ctx => Jumping = ctx.ReadValueAsButton();
-        _playerControls.MainControls.Jump.performed += ctx => NewJumpRequired = false;
+        _playerControls.MainControls.Jump.performed += ctx =>
+        {
+            Jumping = ctx.ReadValueAsButton();
+            NewJumpRequired = false;
+        };
+        //_playerControls.MainControls.Jump.performed += ctx => NewJumpRequired = false;
         _playerControls.MainControls.Sprint.performed += ctx => Sprinting = ctx.ReadValueAsButton();
         _playerControls.MainControls.Crouch.performed += ctx => Crouching = ctx.ReadValueAsButton();
         _playerControls.MainControls.Teleport.performed += ctx => TeleportSetUp = ctx.ReadValueAsButton();
-        _playerControls.MainControls.Attack.performed += ctx => Attacking = ctx.ReadValueAsButton();
+        _playerControls.MainControls.Attack.performed += ctx =>
+        {
+            Attacking = ctx.ReadValueAsButton();
+            NewAttackRequired = false;
+        };
         _playerControls.MainControls.Aiming.performed += ctx => Aiming = ctx.ReadValueAsButton();
         _playerControls.MainControls.Interact.performed += ctx => Interacting = ctx.ReadValueAsButton();
 
@@ -94,12 +112,6 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState = _factory.Grounded();
         CurrentState.EnterState();
         OrbScript = FindObjectOfType<RangedMainOrbScript>();
-    }
-
-    private void SetupAnimationVariables()
-    {
-        RangeSetUpHash = Animator.StringToHash("RangeSetup");
-        RangeFireTriggerHash = Animator.StringToHash("FireRangeBolt");
     }
 
     private void SetUpJumpVariables()
@@ -152,12 +164,29 @@ public class PlayerStateMachine : MonoBehaviour
 
     public void TriggerStart()
     {
-        OrbScript.TriggerStart();
+        OrbScript.TriggerStart(true);
     }
 
-    public void FireBoltTrigger()
+    public void FireBolt()
     {
+        BoltFired = true;
+    }
 
+    public void EnableRightMeleeCollider()
+    {
+        MeleeColliders[0].SetActive(true);
+    }
+    public void EnableLeftMeleeCollider()
+    {
+        MeleeColliders[1].SetActive(true);
+    }
+
+    public void DisableMeleeColliders()
+    {
+        foreach (var obj in MeleeColliders)
+        {
+            obj.SetActive(false);
+        }
     }
 
 #endregion

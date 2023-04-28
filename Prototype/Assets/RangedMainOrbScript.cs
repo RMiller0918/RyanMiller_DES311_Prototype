@@ -13,9 +13,9 @@ public class RangedMainOrbScript : MonoBehaviour
         ShrinkHash = Animator.StringToHash("Shrink");
     }
 
-    public void TriggerStart()
+    public void TriggerStart(bool setBool)
     {
-        Animator.SetTrigger(ShrinkHash);
+        Animator.SetBool(ShrinkHash, setBool);
     }
 
     // Update is called once per frame

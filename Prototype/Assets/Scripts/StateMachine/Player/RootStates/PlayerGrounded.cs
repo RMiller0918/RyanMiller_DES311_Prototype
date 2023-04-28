@@ -40,7 +40,7 @@ public class PlayerGrounded : PlayerBaseState, IGravity
             case true when _ctx.Sprinting:
                 SetSubState(_factory.Run());
                 break;
-            case false:
+            default:
                 SetSubState(_factory.Idle());
                 break;
         }
@@ -50,7 +50,6 @@ public class PlayerGrounded : PlayerBaseState, IGravity
     {
         if (_ctx.Jumping && !_ctx.NewJumpRequired)
         {
-            //Debug.Log("Switching to Jump State");
             SwitchState(_factory.Jump());
         }
         if(!_ctx.CharCont.isGrounded)

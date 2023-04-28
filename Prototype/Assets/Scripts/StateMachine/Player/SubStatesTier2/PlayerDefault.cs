@@ -13,14 +13,12 @@ public class PlayerDefault : PlayerBaseState
     public override void EnterState()
     {
         _isSwitchingState = false;
-        //Debug.Log("Empty State. Current Super State =  " + _currentSuperState);
+        Debug.Log("Empty State. Current Super State =  " + _currentSuperState);
     }
 
     public override void UpdateState()
     {
-        //Debug.Log("Updating Empty");
         if (_isSwitchingState) return;
-        //Debug.Log("Update not blocked");
         CheckSwitchState();
     }
 
@@ -35,8 +33,7 @@ public class PlayerDefault : PlayerBaseState
 
     public override void CheckSwitchState()
     {
-        //Debug.Log("Checking to switch T2 state");
-        if(_ctx.Attacking)
+        if(_ctx.Attacking && !_ctx.NewAttackRequired)
             SwitchState(_factory.Attack());
         else if (_ctx.Aiming)
         {

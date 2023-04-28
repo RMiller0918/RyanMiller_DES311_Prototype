@@ -28,10 +28,7 @@ public abstract class PlayerBaseState: BaseState
     public void UpdateStates()
     {
         UpdateState();
-        if (_currentSubState != null) //update every sub state in the hierarchy
-        {
-            _currentSubState.UpdateStates();
-        }
+        _currentSubState?.UpdateStates();
     }
 
     //exit the state and any substates
@@ -41,6 +38,7 @@ public abstract class PlayerBaseState: BaseState
         if (_currentSubState != null)
         {
             _currentSubState.ExitStates();
+            
         }
     }
 
@@ -49,13 +47,13 @@ public abstract class PlayerBaseState: BaseState
         //current state exits state
         ExitState();
 
-        //new state enters state
-        newState.EnterState();
+
 
         if (_isRootState)
         {
             _ctx.CurrentState = newState;
-
+            //new state enters state
+            newState.EnterState();
         }
         else if (_currentSuperState != null)
         {

@@ -4,58 +4,62 @@ using UnityEngine;
 public class PlayerRangedAttack : PlayerBaseState
 {
     private bool _timedOut = false;
-    private float _timer;
+
     public PlayerRangedAttack(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-        : base(currentContext, playerStateFactory) { }
+        : base(currentContext, playerStateFactory)
+    {
+    }
 
     public override void EnterState()
     {
-        _ctx.Animator.SetBool(_ctx.RangeSetUpHash,true);
+        _ctx.Animator.SetBool(_ctx.RangeSetUpHash, true);
     }
 
     public override void UpdateState()
     {
         CheckSwitchState();
-        if (_ctx.Attacking && _ctx.Aiming)
+        if(_ctx.Attacking && !_timedOut)
+            StartAnimation();
+        if (_ctx.BoltFired && _ctx.Attacking)
             FireBolt();
     }
 
     public override void ExitState()
     {
-        _ctx.TriggerStart();
+        _ctx.OrbScript.TriggerStart(false);
         _ctx.Animator.SetBool(_ctx.RangeSetUpHash, false);
     }
 
-    public override void InitializeSubState(){}
+    public override void InitializeSubState()
+    {
+    }
 
     public override void CheckSwitchState()
     {
-        if(!_ctx.Aiming)
+        if (!_ctx.Aiming)
             SwitchState(_factory.Empty());
     }
 
-    public void FireBolt()
+    private void StartAnimation()
     {
-        if (_timedOut)
-        {
-            _ctx.RangedAttackCooldown = _ctx.StartCoroutine(Cooldown());
-            return;
-        }
         _ctx.Animator.SetTrigger(_ctx.RangeFireTriggerHash);
-        _timedOut = true; 
-        AddBolt();
+        _timedOut = true;
     }
 
-    public void AddBolt()
+    private void FireBolt()
+    {
+        _ctx.RangedAttackCooldown = _ctx.StartCoroutine(Cooldown());
+    }
+
+    private void AddBolt()
     {
         var rotation = new Vector3(_ctx.MainCamera.rotation.eulerAngles.x, _ctx.transform.rotation.eulerAngles.y,0);
-        //Debug.Log(rotation);
-        //Debug.Log(Quaternion.identity);
-        var obj = Object.Instantiate(_ctx.BoltPrefab, _ctx.BoltTransform.position,Quaternion.Euler(rotation));
+        Object.Instantiate(_ctx.BoltPrefab, _ctx.BoltTransform.position,Quaternion.Euler(rotation));
     }
 
     private IEnumerator Cooldown()
     {
+        AddBolt();
         yield return new WaitForSeconds(1f);
         _timedOut = false;
         _ctx.StopCoroutine(_ctx.RangedAttackCooldown);

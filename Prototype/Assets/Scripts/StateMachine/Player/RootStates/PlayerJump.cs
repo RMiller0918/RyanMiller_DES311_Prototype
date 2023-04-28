@@ -17,7 +17,6 @@ public class PlayerJump : PlayerBaseState, IGravity
         SetUpJumpVariables();
         InitializeSubState();
         HandleJump();
-        //Debug.Log("Entered Jump State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()
@@ -28,7 +27,6 @@ public class PlayerJump : PlayerBaseState, IGravity
 
     public override void ExitState()
     {
-        //Debug.Log("Exiting jump state");
         if (_ctx.Jumping)
             _ctx.NewJumpRequired = true;
     }
@@ -40,7 +38,7 @@ public class PlayerJump : PlayerBaseState, IGravity
             case true:
                 SetSubState(_factory.Walk());
                 break;
-            case false:
+            default:
                 SetSubState(_factory.Idle());
                 break;
         }

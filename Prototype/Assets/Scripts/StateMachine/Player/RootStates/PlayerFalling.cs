@@ -16,7 +16,6 @@ public class PlayerFalling : PlayerBaseState
         _isSwitchingState = false;
         InitializeSubState();
         SetUpJumpVariables();
-        //Debug.Log("Entered Falling State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()
@@ -41,7 +40,7 @@ public class PlayerFalling : PlayerBaseState
             case true when _ctx.Sprinting:
                 SetSubState(_factory.Run());
                 break;
-            case false:
+            default:
                 SetSubState(_factory.Idle());
                 break;
         }

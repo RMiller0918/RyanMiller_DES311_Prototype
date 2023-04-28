@@ -12,10 +12,8 @@ public class PlayerRun : PlayerBaseState, IMoveable
 
     public override void EnterState()
     {
-        //Debug.Log("Run State");
         _isSwitchingState = false;
         InitializeSubState();
-        //Debug.Log("Entered Falling State" + "Current Sub State = " + _currentSubState);
     }
 
     public override void UpdateState()
@@ -23,7 +21,6 @@ public class PlayerRun : PlayerBaseState, IMoveable
         CheckSwitchState();
         if (_isSwitchingState)
         {
-            //Debug.Log("Blocking Running after Switch. Switching State: " + _isSwitchingState);
             return;
         }
         Moving();
@@ -35,21 +32,6 @@ public class PlayerRun : PlayerBaseState, IMoveable
 
     public override void InitializeSubState()
     {
-        /*
-        if (_ctx.Attacking && !_ctx.Aiming)
-            SetSubState(_factory.Attack());
-        else if (_ctx.Aiming)
-            SetSubState(_factory.RangedAttack());
-        else if (_ctx.TeleportSetUp)
-            SetSubState(_factory.Teleport());
-        else if (_ctx.PullEnemySetUp)
-            SetSubState(_factory.PullEnemy());
-        else if (_ctx.Healing)
-            SetSubState(_factory.Healing());
-        else
-            SetSubState(_factory.Empty());
-        */
-
         switch (true)
         {
             case var playerCtx when _ctx.Attacking && !_ctx.Aiming:
