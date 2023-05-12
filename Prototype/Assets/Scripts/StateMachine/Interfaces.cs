@@ -10,5 +10,10 @@ public interface IGravity
 
 public interface IDamageable
 {
-    public void HandleDamage(int DamageValue);
+    public void HandleDamage(int damageValue);
+}
+
+public interface ILightable
+{
+    public void HandleHitByLight(int lightValue);
 }

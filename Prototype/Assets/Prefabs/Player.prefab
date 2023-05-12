@@ -231,6 +231,7 @@ MonoBehaviour:
   <MeleeColliders>k__BackingField:
   - {fileID: 1067809221624033763}
   - {fileID: 7808725784991227542}
+  <Lit>k__BackingField: 0
 --- !u!143 &7329067925490398566
 CharacterController:
   m_ObjectHideFlags: 0
@@ -397,7 +398,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6255893244204088536}
   m_LocalRotation: {x: -0.000000005587935, y: 2.353628e-11, z: 0.000000094981516, w: 1}
-  m_LocalPosition: {x: 0.236, y: 0.243, z: 0}
+  m_LocalPosition: {x: 0.30576012, y: 0.3989185, z: 2.2136659e-10}
   m_LocalScale: {x: 0.10000002, y: 0.10000002, z: 0.099999994}
   m_ConstrainProportionsScale: 0
   m_Children: []

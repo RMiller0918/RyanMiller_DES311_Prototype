@@ -34,7 +34,7 @@ public class PlayerRun : PlayerBaseState, IMoveable
     {
         switch (true)
         {
-            case var playerCtx when _ctx.Attacking && !_ctx.Aiming:
+            case var playerCtx when _ctx.Attacking && !_ctx.Aiming && !_ctx.NewAttackRequired:
                 SetSubState(_factory.Attack());
                 break;
             case var playerCtx when _ctx.Aiming:

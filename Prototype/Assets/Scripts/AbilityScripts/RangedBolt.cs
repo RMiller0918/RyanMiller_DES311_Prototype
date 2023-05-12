@@ -32,7 +32,7 @@ public class RangedBolt : MonoBehaviour
 
     private void Timer() //Update timer
     {
-        _destroyTimer += 1f * Time.deltaTime;
+        _destroyTimer += Time.deltaTime;
     }
 
     private void DestroyBolt() //Destroy this object.
@@ -43,11 +43,7 @@ public class RangedBolt : MonoBehaviour
     //Check if the bolt has hit the player or anything else. 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
-        {
-            DestroyBolt();
-            return;
-        }
+        if (other.gameObject.tag is "Light" or "Player") return;
         Debug.Log(other.gameObject);
         CheckForDamageable(other.gameObject);
     }

@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class PlayerStateMachine : MonoBehaviour
+public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
 {
     [Header("Components")] 
     [SerializeField] private PlayerControls _playerControls;
@@ -74,6 +74,8 @@ public class PlayerStateMachine : MonoBehaviour
     [field: SerializeField] public int MeleeCount { get; set; }
     [field: SerializeField] public GameObject[] MeleeColliders { get; private set; }
 
+    [field:Header("Lighting")]
+    [field: SerializeField] public bool Lit { get; private set; }
 
     private void Awake()
     {
@@ -187,6 +189,20 @@ public class PlayerStateMachine : MonoBehaviour
         {
             obj.SetActive(false);
         }
+    }
+    #endregion
+
+    #region Interfaces
+
+    public void HandleHitByLight(int lightValue)
+    {
+        Debug.Log(lightValue);
+        Lit = lightValue > 25;
+    }
+
+    public void HandleDamage(int damageValue)
+    {
+
     }
 
 #endregion

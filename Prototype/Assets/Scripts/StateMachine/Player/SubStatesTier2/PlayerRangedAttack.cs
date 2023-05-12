@@ -55,6 +55,7 @@ public class PlayerRangedAttack : PlayerBaseState
     {
         var rotation = new Vector3(_ctx.MainCamera.rotation.eulerAngles.x, _ctx.transform.rotation.eulerAngles.y,0);
         Object.Instantiate(_ctx.BoltPrefab, _ctx.BoltTransform.position,Quaternion.Euler(rotation));
+        _ctx.BoltFired = false;
     }
 
     private IEnumerator Cooldown()

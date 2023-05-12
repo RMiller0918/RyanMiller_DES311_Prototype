@@ -28,13 +28,13 @@ public class PlayerIdle : PlayerBaseState
     {
         switch (true)
         {
-            case var playerCtx when _ctx.Attacking && !_ctx.Aiming:
+            case var playerCtx when _ctx.Attacking && !_ctx.Aiming && _ctx.NewAttackRequired:
                 SetSubState(_factory.Attack());
                 break;
             case var playerCtx when _ctx.Aiming:
                 SetSubState(_factory.RangedAttack());
                 break;
-            case var playerCtx when _ctx.TeleportSetUp:
+            case var playerCtx when _ctx.TeleportSetUp && _ctx.NewAttackRequired:
                 SetSubState(_factory.Teleport());
                 break;
             case var playerCtx when _ctx.PullEnemySetUp:
