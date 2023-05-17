@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using LightType = UnityEngine.LightType;
 
 public class LightManager : MonoBehaviour
@@ -151,6 +152,13 @@ public class LightManager : MonoBehaviour
         return angle < light.Angle;
     }
 
+    private static bool IsInAngle(Vector3 targetPosition, Transform lightTransform, float lightAngle)
+    {
+        var cosAngle = Vector3.Dot((targetPosition - lightTransform.position).normalized, lightTransform.forward);
+        var angle = Mathf.Acos(cosAngle) * Mathf.Rad2Deg;
+        return angle < lightAngle;
+    }
+
     private static float CalculateLightValue(float distance, float range, float intensity)
     {
         var lightValue = distance / range;
@@ -169,7 +177,51 @@ public class LightManager : MonoBehaviour
     {
         var newChar = character;
         newChar.LightValue = lightValue;
-        newChar.MB.GetComponent<ILightable>().HandleHitByLight((int)lightValue);
+        if(newChar.MB != null)
+            newChar.MB.GetComponent<ILightable>().HandleHitByLight((int)lightValue);
         return newChar;
     }
+
+    public bool CheckValidSpot(GameObject obj, bool valid)
+    {
+        var objPos = obj.transform.position;
+        var closestLightStruct = new LightStruct();
+        var closestLightDistance = 0f;
+        for (var i = 0; i < _lights.Count; i++)
+        {
+            if (!_lights[i].Obj.activeSelf) continue;
+            var lightPosition = _lights[i].Obj.transform.position;
+            var range = _lights[i].Range;
+            var distance = ReturnDistance(lightPosition, objPos);
+            if (distance > range) continue;
+
+            if (!IsInAngle(objPos, _lights[i].Obj.transform, _lights[i].Angle)) continue;
+
+            var isClosestLight = closestLightDistance == 0 || distance < closestLightDistance;
+
+            closestLightDistance = distance;
+            closestLightStruct = _lights[i];
+        }
+
+        if (closestLightStruct.Obj == null)
+            return valid = true;
+
+        return valid = FireRay(closestLightStruct.Obj.transform.position, objPos, closestLightStruct,
+            closestLightDistance, obj);
+    }
+    private bool FireRay(Vector3 origin, Vector3 target, LightStruct light, float distance, GameObject obj)
+    {
+        var lightValue = 0f;
+        var objMask = LayerMask.LayerToName(obj.layer);
+        var mask = LayerMask.GetMask(objMask) | LayerMask.GetMask("Environment");
+        var direction = target - origin;
+        if (Physics.Raycast(origin, direction, out var hit, light.Range, mask))
+        {
+            var objTag = hit.transform.tag;
+            Debug.DrawLine(origin, hit.point);
+            lightValue = objTag == obj.tag ? CalculateLightValue(distance, light.Range, light.Intensity) : 0f;
+        }
+        return lightValue <= 25;
+    }
+
 }

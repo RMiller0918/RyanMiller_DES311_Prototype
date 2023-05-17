@@ -1,8 +1,5 @@
-using TMPro;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 
 public class PlayerLook : MonoBehaviour
 {
@@ -12,7 +9,7 @@ public class PlayerLook : MonoBehaviour
     
     [Header("Settings")]
     [Tooltip("Used to limit the downward angle for the camera. Adjust to liking.")]
-    [Range(25,45)][SerializeField] private static float _minViewDistance = 25f;
+    [Range(25,70)][SerializeField] private float _minViewDistance = 25f;
 
     [Tooltip("Up and down rotation speed.")]
     [Range(4,10)][SerializeField] protected float _xSensitivity = 4f;

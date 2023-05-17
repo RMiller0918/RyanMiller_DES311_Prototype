@@ -11,7 +11,8 @@ public class RangedBolt : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        _damageValue = 10;
+        var random = Random.Range(100, 300);
+        _damageValue = Mathf.RoundToInt(random);
     }
 
 

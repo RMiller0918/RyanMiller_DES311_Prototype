@@ -11,7 +11,7 @@ public class EnemyScriptableObject : ScriptableObject
     }
 
     [SerializeField][Range(50,500)] private int _health;
-    public int Health => Health;
+    public int Health => _health;
     [SerializeField] private int _id;
     public int ID => _id;
     [SerializeField] private string _enemyName;

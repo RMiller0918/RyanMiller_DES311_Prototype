@@ -14,8 +14,10 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     [field: SerializeField] public CharacterController CharCont { get; private set; }
 
     [field: Header("Player Stats")]
-    [field: SerializeField] [field: Range(100,500)] public int Health { get; set; }
-    [field: SerializeField] [field: Range(100,200)] public int Mana { get; set; }
+    [field: SerializeField] public int MaxHealth { get; private set; }
+    [field: SerializeField] [field: Range(100,500)] public float Health { get; set; }
+    [field: SerializeField] public int MaxMana { get; private set; }
+    [field: SerializeField] [field: Range(100,200)] public float Mana { get; set; }
 
     [field: Header("Animation")]
     [field: SerializeField] public Animator Animator { get; private set; }
@@ -41,6 +43,8 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     [field: Header("Repeat action blockers")]
     [field: SerializeField] public bool NewJumpRequired { get; set; }
     [field: SerializeField] public bool NewAttackRequired { get; set; }
+    [field: SerializeField] public bool NewTeleSetUpRequired { get; set; }
+    [field: SerializeField] public bool NewPullRequired { get; set; }
     [field: SerializeField] public bool RangedAttackSetUp { get; set; }
     public Coroutine RangedAttackCooldown { get; set; }
 
@@ -77,6 +81,10 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     [field:Header("Lighting")]
     [field: SerializeField] public bool Lit { get; private set; }
 
+    [field:Header("UI")]
+    [field: SerializeField] public TeleportMarker TeleMarker { get; private set; }
+    [field: SerializeField] public HealthBar HBar { get; private set; }
+    [field: SerializeField] public HealthBar MBar { get; private set; } //using same script for Mana as Health bar.
     private void Awake()
     {
         Animator = GetComponentInChildren<Animator>();
@@ -99,7 +107,11 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
         //_playerControls.MainControls.Jump.performed += ctx => NewJumpRequired = false;
         _playerControls.MainControls.Sprint.performed += ctx => Sprinting = ctx.ReadValueAsButton();
         _playerControls.MainControls.Crouch.performed += ctx => Crouching = ctx.ReadValueAsButton();
-        _playerControls.MainControls.Teleport.performed += ctx => TeleportSetUp = ctx.ReadValueAsButton();
+        _playerControls.MainControls.Teleport.performed += ctx =>
+        {
+            TeleportSetUp = ctx.ReadValueAsButton();
+            NewTeleSetUpRequired = false;
+        };
         _playerControls.MainControls.Attack.performed += ctx =>
         {
             Attacking = ctx.ReadValueAsButton();
@@ -107,6 +119,11 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
         };
         _playerControls.MainControls.Aiming.performed += ctx => Aiming = ctx.ReadValueAsButton();
         _playerControls.MainControls.Interact.performed += ctx => Interacting = ctx.ReadValueAsButton();
+        _playerControls.MainControls.PullEnemy.performed += ctx =>
+        {
+            PullEnemySetUp = ctx.ReadValueAsButton();
+            NewPullRequired = false;
+        };
 
         SetUpJumpVariables();
 
@@ -133,6 +150,8 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     // Start is called before the first frame update
     private void Start()
     {
+        MaxHealth = (int)Health;
+        MaxMana = (int)Mana;
     }
 
     // Update is called once per frame
@@ -147,6 +166,7 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     private void FixedUpdate()
     {
         CheckGrounded();
+        ManaRegen();
     }
 
     private void CheckGrounded()
@@ -161,8 +181,15 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
         */
     }
 
+    private void ManaRegen()
+    {
+        if (Lit || !(Mana < MaxMana)) return;
+        Mana += 2f * Time.deltaTime;
+        MBar.UpdateHealthBar(MaxMana, Mana);
+    }
 
-#region animation events
+
+    #region animation events
 
     public void TriggerStart()
     {
@@ -172,6 +199,9 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     public void FireBolt()
     {
         BoltFired = true;
+        var rotation = new Vector3(MainCamera.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
+        Instantiate(BoltPrefab, BoltTransform.position, Quaternion.Euler(rotation));
+        BoltFired = false;
     }
 
     public void EnableRightMeleeCollider()

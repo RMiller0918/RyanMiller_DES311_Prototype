@@ -13,7 +13,7 @@ public class PlayerTeleport : PlayerBaseState
 
     public override void EnterState()
     {
-        _finished = false;
+        _finished = _ctx.NewTeleSetUpRequired;
         Debug.Log("Entered Teleport");
     }
 
@@ -24,9 +24,13 @@ public class PlayerTeleport : PlayerBaseState
         CheckSwitchState();
         if (_finished) return;
         Debug.Log("Firing Ray");
-        switch(_ctx.Attacking)
+
+        var color = _ctx.TeleMarker.IsValid ? Color.green : Color.red;
+        _ctx.TeleMarker.SetColor(color);
+
+        switch (_ctx.Attacking)
         {
-            case true:
+            case true when _ctx.TeleMarker.IsValid:
                 Teleport();
                 break;
             default:
@@ -37,8 +41,11 @@ public class PlayerTeleport : PlayerBaseState
 
     public override void ExitState()
     {
+        _ctx.TeleMarker.ResetPosition();
         if (_ctx.Attacking)
             _ctx.NewAttackRequired = true;
+        if (_ctx.TeleportSetUp)
+            _ctx.NewTeleSetUpRequired = true;
     }
 
     public override void InitializeSubState() { }
@@ -54,16 +61,19 @@ public class PlayerTeleport : PlayerBaseState
         var cameraTransform = Camera.main.transform;
         var position = cameraTransform.position;
         var endPosition = position + cameraTransform.forward * _range;
-
-        Physics.Raycast(position, cameraTransform.forward, out var hitInfo, _range);
+        var mask = LayerMask.GetMask("UI") | LayerMask.GetMask("Ignore Raycast");
+        Physics.Raycast(position, cameraTransform.forward, out var hitInfo, _range, ~mask);
 
         endPosition = hitInfo.transform != null ? hitInfo.point : endPosition;
         _targetLocation = endPosition;
+        _ctx.TeleMarker.SetPosition(endPosition);
         Debug.DrawLine(position, endPosition, Color.green);
     }
 
     private void Teleport()
     {
+        _ctx.Mana -= 25;
+        _ctx.MBar.UpdateHealthBar(_ctx.MaxMana, _ctx.Mana);
         _ctx.CharCont.enabled = false;
         _ctx.transform.position = _targetLocation;
         _ctx.CharCont.enabled = true;
