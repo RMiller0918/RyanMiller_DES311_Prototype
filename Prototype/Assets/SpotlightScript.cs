@@ -42,7 +42,7 @@ public class SpotlightScript : MonoBehaviour
         var cosAngle = Vector3.Dot(
             (oTransform.position - _transform.position).normalized, _transform.forward);
         var angle = Mathf.Acos(cosAngle) * Mathf.Rad2Deg;
-        Debug.Log(angle < _outsideAngle);
+        //Debug.Log(angle < _outsideAngle);
         return angle < _outsideAngle;
     }
 

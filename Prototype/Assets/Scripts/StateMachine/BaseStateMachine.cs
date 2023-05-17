@@ -1,14 +1,16 @@
+using UnityEngine;
+
 public abstract class BaseState
 {
     protected bool _isRootState = false;
-
+    protected bool _isSwitchingState = false;
+    protected bool _isActive = false;
     public abstract void EnterState();
     public abstract void UpdateState();
     public abstract void ExitState();
     public abstract void CheckSwitchState();
     public abstract void InitializeSubState();
 }
-
 public abstract class PlayerBaseState: BaseState
 {
     protected PlayerStateMachine _ctx;
@@ -26,10 +28,7 @@ public abstract class PlayerBaseState: BaseState
     public void UpdateStates()
     {
         UpdateState();
-        if (_currentSubState != null)
-        {
-            _currentSubState.UpdateState();
-        }
+        _currentSubState?.UpdateStates();
     }
 
     //exit the state and any substates
@@ -38,7 +37,8 @@ public abstract class PlayerBaseState: BaseState
         ExitState();
         if (_currentSubState != null)
         {
-            _currentSubState.ExitState();
+            _currentSubState.ExitStates();
+            
         }
     }
 
@@ -47,17 +47,17 @@ public abstract class PlayerBaseState: BaseState
         //current state exits state
         ExitState();
 
-        //new state enters state
-        newState.EnterState();
+
 
         if (_isRootState)
         {
             _ctx.CurrentState = newState;
-
+            //new state enters state
+            newState.EnterState();
         }
         else if (_currentSuperState != null)
         {
-            //Set the current super states Sub state to the new state
+            //the new state becomes a substate to the above layer in hierarchy.
             _currentSuperState.SetSubState(newState);
         }
     }
@@ -73,6 +73,8 @@ public abstract class PlayerBaseState: BaseState
     {
         _currentSubState = newSubState;
         newSubState.SetSuperState(this);
+        if(!_currentSubState._isActive)
+            newSubState.EnterState();
     }
 }
 
@@ -95,7 +97,7 @@ public abstract class EnemyBaseState : BaseState
         UpdateState();
         if (_currentSubState != null)
         {
-            _currentSubState.UpdateState();
+            _currentSubState.UpdateStates();
         }
     }
 
@@ -105,7 +107,7 @@ public abstract class EnemyBaseState : BaseState
         ExitState();
         if (_currentSubState != null)
         {
-            _currentSubState.ExitState();
+            _currentSubState.ExitStates();
         }
     }
 

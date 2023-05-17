@@ -29,28 +29,118 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Move"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""4f89544f-410f-42dc-ab0b-a8ed729d488e"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Look"",
-                    ""type"": ""Value"",
+                    ""name"": ""MouseX"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""c470fd07-8780-44b7-8ce5-ee0ba06eff39"",
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse Y"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""654d1a42-17f6-481a-9e3e-a1f150e2cedc"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""34bf43df-806a-449d-9a2f-268f6884f026"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Crouch"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""493ef91d-b8a4-45d2-8fe0-1c17134915e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""e138c32d-9e3a-416a-870f-58ac316e16ec"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Teleport"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""09aa0004-43f2-48d5-95ce-15e10148ed92"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a394710f-3bff-4f18-9690-1768b14e62b9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Aiming"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""8a32073a-d161-4113-993a-036145ca7bef"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""4ac21d52-374e-4dd7-a8cc-7ef8606571f9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PullEnemy"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""98ed1da1-da92-4727-b9cf-aa524564cefa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Healing"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a1b98ed9-e89a-4baf-aeec-9684f5717262"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": ""Keyboard"",
                     ""id"": ""56269700-6aae-418e-aa71-af372285930b"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -61,7 +151,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Up"",
                     ""id"": ""05c1e057-b9fa-4bdf-82ca-3d1e04d18a39"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -72,7 +162,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Down"",
                     ""id"": ""944429fb-23a7-46f6-9a5a-ebdea121b8ba"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -103,92 +193,169 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""Forward"",
-                    ""id"": ""1d5dff0a-db25-4fa0-9706-b1a2dfec567b"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Backward"",
-                    ""id"": ""7a79e406-4e19-48c4-82c0-7ca31d67ad45"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Up Down"",
-                    ""id"": ""e9ed6e5b-2b6f-47b9-80d5-63a9afbd8e7f"",
+                    ""name"": ""1D Axis"",
+                    ""id"": ""eb393f6e-26c9-4224-8720-b08f73b10d9c"",
                     ""path"": ""1DAxis"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""MouseX"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": ""negative"",
-                    ""id"": ""526efde4-0445-457d-8910-799c038b5827"",
-                    ""path"": ""<Mouse>/delta/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""8af97b3f-5e6d-4a2d-a3b0-e394889f487b"",
-                    ""path"": ""<Mouse>/delta/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Left Right"",
-                    ""id"": ""58d1e39e-fadd-44df-899f-091b69de5a5a"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Look"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""bc727a8e-e20c-42a7-bd4b-f70e620b0711"",
+                    ""id"": ""401dad41-5dd2-4a1d-9228-a5227aeba263"",
                     ""path"": ""<Mouse>/delta/left"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""MouseX"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": ""positive"",
-                    ""id"": ""fdc320bd-435d-403a-8717-c55d3371815f"",
+                    ""id"": ""22bf0b65-a94d-40d4-9cf1-b1948d461084"",
                     ""path"": ""<Mouse>/delta/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Look"",
+                    ""action"": ""MouseX"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""be70185d-baed-46a2-ab61-edb891f8ef99"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse Y"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""3fa4d71f-1c68-44ac-9208-926f45d35dff"",
+                    ""path"": ""<Mouse>/delta/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse Y"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""1f411d07-a8a9-48a4-af96-298944a9bc75"",
+                    ""path"": ""<Mouse>/delta/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Mouse Y"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c78f080b-00ea-491f-9f0a-0737ccfb83d5"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4350ace1-b4c7-496d-8b04-9c4236e8b848"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""38cccd84-bdc2-409f-9da8-074d7e80e197"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ab175576-0ba1-48c3-9299-05ebfbb7a662"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Teleport"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db14b9f0-217e-454f-86b9-7aad12094a7f"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""493f6db2-ad31-480a-9180-883899d68695"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Aiming"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""122ddb2f-7e0d-449f-a9c3-9db389bb7cc9"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e531e317-5aca-4a23-8a78-75d47385b270"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PullEnemy"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f9358798-03d3-4db9-9f50-d812570ce5d6"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Healing"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -198,7 +365,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         // MainControls
         m_MainControls = asset.FindActionMap("MainControls", throwIfNotFound: true);
         m_MainControls_Move = m_MainControls.FindAction("Move", throwIfNotFound: true);
-        m_MainControls_Look = m_MainControls.FindAction("Look", throwIfNotFound: true);
+        m_MainControls_MouseX = m_MainControls.FindAction("MouseX", throwIfNotFound: true);
+        m_MainControls_MouseY = m_MainControls.FindAction("Mouse Y", throwIfNotFound: true);
+        m_MainControls_Sprint = m_MainControls.FindAction("Sprint", throwIfNotFound: true);
+        m_MainControls_Crouch = m_MainControls.FindAction("Crouch", throwIfNotFound: true);
+        m_MainControls_Jump = m_MainControls.FindAction("Jump", throwIfNotFound: true);
+        m_MainControls_Teleport = m_MainControls.FindAction("Teleport", throwIfNotFound: true);
+        m_MainControls_Attack = m_MainControls.FindAction("Attack", throwIfNotFound: true);
+        m_MainControls_Aiming = m_MainControls.FindAction("Aiming", throwIfNotFound: true);
+        m_MainControls_Interact = m_MainControls.FindAction("Interact", throwIfNotFound: true);
+        m_MainControls_PullEnemy = m_MainControls.FindAction("PullEnemy", throwIfNotFound: true);
+        m_MainControls_Healing = m_MainControls.FindAction("Healing", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -259,13 +436,33 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MainControls;
     private IMainControlsActions m_MainControlsActionsCallbackInterface;
     private readonly InputAction m_MainControls_Move;
-    private readonly InputAction m_MainControls_Look;
+    private readonly InputAction m_MainControls_MouseX;
+    private readonly InputAction m_MainControls_MouseY;
+    private readonly InputAction m_MainControls_Sprint;
+    private readonly InputAction m_MainControls_Crouch;
+    private readonly InputAction m_MainControls_Jump;
+    private readonly InputAction m_MainControls_Teleport;
+    private readonly InputAction m_MainControls_Attack;
+    private readonly InputAction m_MainControls_Aiming;
+    private readonly InputAction m_MainControls_Interact;
+    private readonly InputAction m_MainControls_PullEnemy;
+    private readonly InputAction m_MainControls_Healing;
     public struct MainControlsActions
     {
         private @PlayerControls m_Wrapper;
         public MainControlsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_MainControls_Move;
-        public InputAction @Look => m_Wrapper.m_MainControls_Look;
+        public InputAction @MouseX => m_Wrapper.m_MainControls_MouseX;
+        public InputAction @MouseY => m_Wrapper.m_MainControls_MouseY;
+        public InputAction @Sprint => m_Wrapper.m_MainControls_Sprint;
+        public InputAction @Crouch => m_Wrapper.m_MainControls_Crouch;
+        public InputAction @Jump => m_Wrapper.m_MainControls_Jump;
+        public InputAction @Teleport => m_Wrapper.m_MainControls_Teleport;
+        public InputAction @Attack => m_Wrapper.m_MainControls_Attack;
+        public InputAction @Aiming => m_Wrapper.m_MainControls_Aiming;
+        public InputAction @Interact => m_Wrapper.m_MainControls_Interact;
+        public InputAction @PullEnemy => m_Wrapper.m_MainControls_PullEnemy;
+        public InputAction @Healing => m_Wrapper.m_MainControls_Healing;
         public InputActionMap Get() { return m_Wrapper.m_MainControls; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -278,9 +475,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMove;
-                @Look.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnLook;
+                @MouseX.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseX;
+                @MouseX.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseX;
+                @MouseX.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseX;
+                @MouseY.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseY;
+                @MouseY.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseY;
+                @MouseY.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnMouseY;
+                @Sprint.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnSprint;
+                @Sprint.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnSprint;
+                @Sprint.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnSprint;
+                @Crouch.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnCrouch;
+                @Crouch.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnCrouch;
+                @Crouch.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnCrouch;
+                @Jump.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnJump;
+                @Jump.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnJump;
+                @Jump.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnJump;
+                @Teleport.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnTeleport;
+                @Teleport.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnTeleport;
+                @Teleport.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnTeleport;
+                @Attack.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnAttack;
+                @Aiming.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnAiming;
+                @Aiming.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnAiming;
+                @Aiming.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnAiming;
+                @Interact.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnInteract;
+                @PullEnemy.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnPullEnemy;
+                @PullEnemy.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnPullEnemy;
+                @PullEnemy.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnPullEnemy;
+                @Healing.started -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnHealing;
+                @Healing.performed -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnHealing;
+                @Healing.canceled -= m_Wrapper.m_MainControlsActionsCallbackInterface.OnHealing;
             }
             m_Wrapper.m_MainControlsActionsCallbackInterface = instance;
             if (instance != null)
@@ -288,9 +515,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
-                @Look.started += instance.OnLook;
-                @Look.performed += instance.OnLook;
-                @Look.canceled += instance.OnLook;
+                @MouseX.started += instance.OnMouseX;
+                @MouseX.performed += instance.OnMouseX;
+                @MouseX.canceled += instance.OnMouseX;
+                @MouseY.started += instance.OnMouseY;
+                @MouseY.performed += instance.OnMouseY;
+                @MouseY.canceled += instance.OnMouseY;
+                @Sprint.started += instance.OnSprint;
+                @Sprint.performed += instance.OnSprint;
+                @Sprint.canceled += instance.OnSprint;
+                @Crouch.started += instance.OnCrouch;
+                @Crouch.performed += instance.OnCrouch;
+                @Crouch.canceled += instance.OnCrouch;
+                @Jump.started += instance.OnJump;
+                @Jump.performed += instance.OnJump;
+                @Jump.canceled += instance.OnJump;
+                @Teleport.started += instance.OnTeleport;
+                @Teleport.performed += instance.OnTeleport;
+                @Teleport.canceled += instance.OnTeleport;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
+                @Aiming.started += instance.OnAiming;
+                @Aiming.performed += instance.OnAiming;
+                @Aiming.canceled += instance.OnAiming;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @PullEnemy.started += instance.OnPullEnemy;
+                @PullEnemy.performed += instance.OnPullEnemy;
+                @PullEnemy.canceled += instance.OnPullEnemy;
+                @Healing.started += instance.OnHealing;
+                @Healing.performed += instance.OnHealing;
+                @Healing.canceled += instance.OnHealing;
             }
         }
     }
@@ -298,6 +555,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     public interface IMainControlsActions
     {
         void OnMove(InputAction.CallbackContext context);
-        void OnLook(InputAction.CallbackContext context);
+        void OnMouseX(InputAction.CallbackContext context);
+        void OnMouseY(InputAction.CallbackContext context);
+        void OnSprint(InputAction.CallbackContext context);
+        void OnCrouch(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnTeleport(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
+        void OnAiming(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnPullEnemy(InputAction.CallbackContext context);
+        void OnHealing(InputAction.CallbackContext context);
     }
 }
