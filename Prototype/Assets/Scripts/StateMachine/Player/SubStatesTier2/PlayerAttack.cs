@@ -4,11 +4,13 @@ using UnityEngine;
 public class PlayerAttack : PlayerBaseState
 {
     private Coroutine _currentMeleeResetRoutine;
+
     public PlayerAttack(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory) { }
 
     public override void EnterState()
     {
+        _isActive = true;
         Debug.Log(_ctx.MeleeCount);
         if (_ctx.MeleeCount > 2)
         {
@@ -19,8 +21,8 @@ public class PlayerAttack : PlayerBaseState
         {
             _ctx.MeleeCount += 1;
             _ctx.Animator.SetInteger(_ctx.MeleeCountHash, _ctx.MeleeCount);
-            _ctx.Animator.SetTrigger(_ctx.MeleeHash);
         }
+        _ctx.Animator.SetTrigger(_ctx.MeleeHash);
     }
 
     public override void UpdateState()
@@ -34,9 +36,11 @@ public class PlayerAttack : PlayerBaseState
     {
         if (_ctx.Attacking)
             _ctx.NewAttackRequired = true;
+        _isActive = false;
     }
 
-    public override void InitializeSubState() { }
+    public override void InitializeSubState() 
+    { }
 
     public override void CheckSwitchState()
     {

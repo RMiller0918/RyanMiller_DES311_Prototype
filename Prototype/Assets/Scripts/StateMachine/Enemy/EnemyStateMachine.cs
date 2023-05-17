@@ -2,7 +2,16 @@ using UnityEngine;
 
 public class EnemyStateMachine : MonoBehaviour, IDamageable, ILightable
 {
+    public enum EnemyState
+    {
+        Unaware,
+        Suspicious,
+        Hostile,
+    }
+
     [SerializeField] private EnemyScriptableObject _enemyData;
+    [field: SerializeField] public EnemyState State { get; set; }
+    private EnemyStateFactory _factory;
     [field: SerializeField] public EnemyBaseState CurrentState { get; set; }
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _health;
@@ -16,6 +25,10 @@ public class EnemyStateMachine : MonoBehaviour, IDamageable, ILightable
     private void Awake()
     {
         _healthBar = GetComponentInChildren<HealthBar>();
+
+        _factory = new EnemyStateFactory(this);
+        CurrentState = _factory.Grounded();
+        CurrentState.EnterState();
     }
 
     // Start is called before the first frame update
@@ -28,6 +41,7 @@ public class EnemyStateMachine : MonoBehaviour, IDamageable, ILightable
     // Update is called once per frame
     void Update()
     {
+        CurrentState.UpdateStates();
         if(_health <= 0)
             Destroy(this.gameObject);
     }
@@ -40,7 +54,7 @@ public class EnemyStateMachine : MonoBehaviour, IDamageable, ILightable
 
     public void HandleHitByLight(int lightValue)
     {
-        Debug.Log(lightValue);
+        //Debug.Log(lightValue);
         Lit = lightValue > 25;
     }
 }

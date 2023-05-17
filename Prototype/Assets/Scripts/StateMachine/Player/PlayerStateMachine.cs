@@ -1,7 +1,3 @@
-using System.Linq;
-using System.Runtime.InteropServices.ComTypes;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
@@ -24,7 +20,11 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     [field: SerializeField] public int RangeSetUpHash { get; private set; }
     [field: SerializeField] public int RangeFireTriggerHash { get; private set; }
     [field: SerializeField] public int MeleeHash { get; private set; }
+    [field: SerializeField] public int TeleportSetupHash { get; private set; }
+    [field: SerializeField] public int TeleportTriggerHash { get; private set; }
+    [field: SerializeField] public int HealTriggerHash { get; private set; }
     [field: SerializeField] public Vector2 MoveInput { get; private set; }
+
 
     [field: Header("State Booleans")]
     [field: SerializeField] public bool Moving { get; private set; }
@@ -45,6 +45,7 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     [field: SerializeField] public bool NewAttackRequired { get; set; }
     [field: SerializeField] public bool NewTeleSetUpRequired { get; set; }
     [field: SerializeField] public bool NewPullRequired { get; set; }
+    [field: SerializeField] public bool NewHealRequired { get; set; }
     [field: SerializeField] public bool RangedAttackSetUp { get; set; }
     public Coroutine RangedAttackCooldown { get; set; }
 
@@ -78,6 +79,9 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     [field: SerializeField] public int MeleeCount { get; set; }
     [field: SerializeField] public GameObject[] MeleeColliders { get; private set; }
 
+    [field: Header("Teleport")]
+    [field: SerializeField] public bool IsTeleporting { get; set; }
+
     [field:Header("Lighting")]
     [field: SerializeField] public bool Lit { get; private set; }
 
@@ -92,6 +96,9 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
         RangeFireTriggerHash = Animator.StringToHash("FireRangeBolt");
         MeleeHash = Animator.StringToHash("Melee");
         MeleeCountHash = Animator.StringToHash("MeleeCount");
+        TeleportSetupHash = Animator.StringToHash("TeleportSetup");
+        TeleportTriggerHash = Animator.StringToHash("Teleport");
+        HealTriggerHash = Animator.StringToHash("Heal");
         CharCont = GetComponent < CharacterController>();
         MainCamera = Camera.main.transform;
         _playerControls = new PlayerControls();
@@ -104,7 +111,6 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
             Jumping = ctx.ReadValueAsButton();
             NewJumpRequired = false;
         };
-        //_playerControls.MainControls.Jump.performed += ctx => NewJumpRequired = false;
         _playerControls.MainControls.Sprint.performed += ctx => Sprinting = ctx.ReadValueAsButton();
         _playerControls.MainControls.Crouch.performed += ctx => Crouching = ctx.ReadValueAsButton();
         _playerControls.MainControls.Teleport.performed += ctx =>
@@ -123,6 +129,11 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
         {
             PullEnemySetUp = ctx.ReadValueAsButton();
             NewPullRequired = false;
+        };
+        _playerControls.MainControls.Healing.performed += ctx =>
+        {
+            Healing = ctx.ReadValueAsButton();
+            NewHealRequired = false;
         };
 
         SetUpJumpVariables();
@@ -172,19 +183,13 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     private void CheckGrounded()
     {
         Grounded = CharCont.isGrounded;
-        //Grounded = Physics.Raycast(transform.position, Vector3.down, 0.1f);
-        /*
-        if (!CharCont.isGrounded)
-            AppliedMoveVelocityY += Gravity * Time.deltaTime;
-        else
-            AppliedMoveVelocityY = GroundedGravity;
-        */
     }
 
     private void ManaRegen()
     {
         if (Lit || !(Mana < MaxMana)) return;
         Mana += 2f * Time.deltaTime;
+        Mana = Mathf.Clamp(Mana, 0, MaxMana);
         MBar.UpdateHealthBar(MaxMana, Mana);
     }
 
@@ -199,6 +204,8 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
     public void FireBolt()
     {
         BoltFired = true;
+        Mana -= 15f;
+        Mana = Mathf.Clamp(Mana, 0, MaxMana);
         var rotation = new Vector3(MainCamera.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, 0);
         Instantiate(BoltPrefab, BoltTransform.position, Quaternion.Euler(rotation));
         BoltFired = false;
@@ -226,13 +233,15 @@ public class PlayerStateMachine : MonoBehaviour, ILightable, IDamageable
 
     public void HandleHitByLight(int lightValue)
     {
-        Debug.Log(lightValue);
         Lit = lightValue > 25;
     }
 
     public void HandleDamage(int damageValue)
     {
-
+        var newHealth = Health - damageValue;
+        Health = Mathf.Lerp(Health, newHealth, 5f * Time.deltaTime);
+        Health = Mathf.Clamp(Health, 0, MaxHealth);
+        HBar.UpdateHealthBar(MaxHealth, Health);
     }
 
 #endregion

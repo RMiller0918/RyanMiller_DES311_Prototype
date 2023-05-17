@@ -101,6 +101,8 @@ public class PlayerStateFactory
 
 internal enum EnemyStates
 {
+    grounded,
+    falling,
     stunned,
     unsuspicious,
     suspicious,
@@ -109,7 +111,6 @@ internal enum EnemyStates
     walk,
     run,
     attack,
-    heal,
 }
 
 public class EnemyStateFactory
@@ -120,5 +121,65 @@ public class EnemyStateFactory
     public EnemyStateFactory(EnemyStateMachine currentContext)
     {
         _context = currentContext;
+        _states[EnemyStates.grounded] = new EnemyGrounded(_context, this);
+        _states[EnemyStates.falling] = new EnemyFalling(_context, this);
+        _states[EnemyStates.stunned] = new EnemyStunned(_context, this);
+        _states[EnemyStates.unsuspicious] = new EnemyUnsuspicious(_context, this);
+        _states[EnemyStates.suspicious] = new EnemySuspicious(_context, this);
+        _states[EnemyStates.alerted] = new EnemyAlerted(_context, this);
+        _states[EnemyStates.idle] = new EnemyIdle(_context, this);
+        _states[EnemyStates.walk] = new EnemyWalk(_context, this);
+        _states[EnemyStates.run] = new EnemyRun(_context, this);
+        _states[EnemyStates.attack] = new EnemyAttack(_context, this);
+    }
+
+    public EnemyBaseState Grounded()
+    {
+        return _states[EnemyStates.grounded];
+    }
+
+    public EnemyBaseState Falling()
+    {
+        return _states[EnemyStates.falling];
+    }
+
+    public EnemyBaseState Stunned()
+    {
+        return _states[EnemyStates.stunned];
+    }
+
+    public EnemyBaseState Unsuspicious()
+    {
+        return _states[EnemyStates.unsuspicious];
+    }
+
+    public EnemyBaseState Suspicious()
+    {
+        return _states[EnemyStates.suspicious];
+    }
+
+    public EnemyBaseState Alerted()
+    {
+        return _states[EnemyStates.alerted];
+    }
+
+    public EnemyBaseState Idle()
+    {
+        return _states[EnemyStates.idle];
+    }
+
+    public EnemyBaseState Walk()
+    {
+        return _states[EnemyStates.walk];
+    }
+
+    public EnemyBaseState Run()
+    {
+        return _states[EnemyStates.run];
+    }
+
+    public EnemyBaseState Attack()
+    {
+        return _states[EnemyStates.attack];
     }
 }

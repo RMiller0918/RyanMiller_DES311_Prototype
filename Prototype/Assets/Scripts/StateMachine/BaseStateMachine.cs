@@ -4,7 +4,7 @@ public abstract class BaseState
 {
     protected bool _isRootState = false;
     protected bool _isSwitchingState = false;
-
+    protected bool _isActive = false;
     public abstract void EnterState();
     public abstract void UpdateState();
     public abstract void ExitState();
@@ -73,7 +73,8 @@ public abstract class PlayerBaseState: BaseState
     {
         _currentSubState = newSubState;
         newSubState.SetSuperState(this);
-        newSubState.EnterState();
+        if(!_currentSubState._isActive)
+            newSubState.EnterState();
     }
 }
 

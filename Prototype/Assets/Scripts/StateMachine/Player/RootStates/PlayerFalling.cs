@@ -12,6 +12,7 @@ public class PlayerFalling : PlayerBaseState
 
     public override void EnterState()
     {
+        _isActive = true;
         _ctx.IsJumping = false;
         _isSwitchingState = false;
         InitializeSubState();
@@ -27,7 +28,8 @@ public class PlayerFalling : PlayerBaseState
 
     public override void ExitState()
     {
-
+        _ctx.HandleDamage(100);
+        _isActive = false;
     }
 
     public override void InitializeSubState()

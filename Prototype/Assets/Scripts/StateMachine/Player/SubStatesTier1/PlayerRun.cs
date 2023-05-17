@@ -12,6 +12,7 @@ public class PlayerRun : PlayerBaseState, IMoveable
 
     public override void EnterState()
     {
+        _isActive = true;
         _isSwitchingState = false;
         InitializeSubState();
     }
@@ -23,36 +24,41 @@ public class PlayerRun : PlayerBaseState, IMoveable
         {
             return;
         }
-        Moving();
+        if(!_ctx.IsTeleporting)
+            Moving();
     }
 
     public override void ExitState()
     {
+        _isActive = false;
     }
 
     public override void InitializeSubState()
     {
+        
         switch (true)
         {
             case var playerCtx when _ctx.Attacking && !_ctx.Aiming && !_ctx.NewAttackRequired:
                 SetSubState(_factory.Attack());
                 break;
-            case var playerCtx when _ctx.Aiming:
+            case var playerCtx when _ctx.Aiming && _ctx.Mana > 15f:
                 SetSubState(_factory.RangedAttack());
                 break;
-            case var playerCtx when _ctx.TeleportSetUp:
+            case var playerCtx when _ctx.TeleportSetUp && !_ctx.NewTeleSetUpRequired && _ctx.Mana > 25f:
                 SetSubState(_factory.Teleport());
                 break;
-            case var playerCtx when _ctx.PullEnemySetUp:
+            case var playerCtx when _ctx.PullEnemySetUp && !_ctx.NewPullRequired && _ctx.Mana > 40f:
                 SetSubState(_factory.PullEnemy());
                 break;
-            case var playerCtx when _ctx.Healing:
+            case var playerCtx when _ctx.Healing && !_ctx.NewHealRequired && _ctx.Mana > 65f:
                 SetSubState(_factory.Healing());
                 break;
             default:
                 SetSubState(_factory.Empty());
                 break;
         }
+        
+        //SetSubState(_factory.Empty());
     }
 
     public override void CheckSwitchState()

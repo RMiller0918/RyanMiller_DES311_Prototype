@@ -13,6 +13,7 @@ public class PlayerJump : PlayerBaseState, IGravity
 
     public override void EnterState()
     {
+        _isActive = true;
         _isSwitchingState = false;
         SetUpJumpVariables();
         InitializeSubState();
@@ -29,6 +30,7 @@ public class PlayerJump : PlayerBaseState, IGravity
     {
         if (_ctx.Jumping)
             _ctx.NewJumpRequired = true;
+        _isActive = false;
     }
 
     public override void InitializeSubState()

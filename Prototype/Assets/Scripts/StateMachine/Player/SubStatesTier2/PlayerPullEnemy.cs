@@ -14,11 +14,13 @@ public class PlayerPullEnemy : PlayerBaseState
     private Mode _mode;
     private Vector3 _targetLocation;
     private float _range = 10f;
+
     public PlayerPullEnemy(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory) { }
 
     public override void EnterState()
     {
+        _isActive = true;
         Debug.Log("Entered shadow pull state");
         _ctx.TeleMarker.ResetPosition();
         _mode = Mode.selectingTarget;
@@ -56,6 +58,7 @@ public class PlayerPullEnemy : PlayerBaseState
         if (_ctx.PullEnemySetUp)
             _ctx.NewPullRequired = true;
         _ctx.TeleMarker.ResetPosition();
+        _isActive = false;
     }
 
     public override void InitializeSubState()
@@ -79,6 +82,7 @@ public class PlayerPullEnemy : PlayerBaseState
     private void TeleportTarget()
     {
         _ctx.Mana -= 25;
+        _ctx.Mana = Mathf.Clamp(_ctx.Mana, 0, _ctx.MaxMana);
         _ctx.MBar.UpdateHealthBar(_ctx.MaxMana, _ctx.Mana);
         chosenEnemy.GetComponent<CharacterController>().enabled = false;
         var height = chosenEnemy.GetComponent<CharacterController>().height / 2;
@@ -94,7 +98,25 @@ public class PlayerPullEnemy : PlayerBaseState
         var cameraTransform = Camera.main.transform;
         var position = cameraTransform.position;
         var endPosition = position + cameraTransform.forward * _range;
-        if(Physics.Raycast(position, cameraTransform.forward, out var hitInfo, _range, mask))
+        switch (_mode)
+        {
+            case Mode.selectingTarget:
+                Physics.Raycast(position, cameraTransform.forward, out var hitInfo, _range, mask);
+                if (hitInfo.transform == null) return;
+                if (hitInfo.transform.tag != "Enemy") return;
+                if (hitInfo.transform.GetComponent<EnemyStateMachine>().Lit) return;
+                if (_ctx.Attacking)
+                    SelectTarget(hitInfo.transform.gameObject);
+                break;
+            case Mode.selectingLocation:
+                Physics.Raycast(position, cameraTransform.forward, out var hit, _range, mask);
+                endPosition = hit.transform != null ? hit.point : endPosition;
+                _targetLocation = endPosition;
+                _ctx.TeleMarker.SetPosition(endPosition);
+                break;
+        }
+        /*
+        if(Physics.Raycast(position, cameraTransform.forward, out hitInfo, _range, mask))
         {
             switch (_mode)
             {
@@ -112,5 +134,6 @@ public class PlayerPullEnemy : PlayerBaseState
                     break;
             }
         }
+        */
     }
 }

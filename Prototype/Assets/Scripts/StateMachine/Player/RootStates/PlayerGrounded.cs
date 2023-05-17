@@ -13,6 +13,7 @@ public class PlayerGrounded : PlayerBaseState, IGravity
 
     public override void EnterState()
     {
+        _isActive = true;
         _ctx.IsJumping = false;
         SetUpGravity();
         InitializeSubState();
@@ -27,7 +28,7 @@ public class PlayerGrounded : PlayerBaseState, IGravity
 
     public override void ExitState()
     {
-        
+        _isActive = false;
     }
 
     public override void InitializeSubState()

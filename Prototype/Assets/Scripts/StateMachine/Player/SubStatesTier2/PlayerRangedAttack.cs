@@ -4,12 +4,11 @@ using UnityEngine;
 public class PlayerRangedAttack : PlayerBaseState
 {
     public PlayerRangedAttack(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
-        : base(currentContext, playerStateFactory)
-    {
-    }
+        : base(currentContext, playerStateFactory) { }
 
     public override void EnterState()
     {
+        _isActive = true;
         _ctx.Animator.SetBool(_ctx.RangeSetUpHash, true);
     }
 
@@ -24,6 +23,7 @@ public class PlayerRangedAttack : PlayerBaseState
     {
         _ctx.OrbScript.TriggerStart(false);
         _ctx.Animator.SetBool(_ctx.RangeSetUpHash, false);
+        _isActive = false;
     }
 
     public override void InitializeSubState()

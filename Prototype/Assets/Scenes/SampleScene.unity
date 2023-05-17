@@ -633,7 +633,7 @@ PrefabInstance:
       objectReference: {fileID: 1004670889}
     - target: {fileID: 7667042863553636322, guid: 18727e5f643b97c4ab1543f09cabc2cd, type: 3}
       propertyPath: <Mana>k__BackingField
-      value: 200
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7759342545762998219, guid: 18727e5f643b97c4ab1543f09cabc2cd, type: 3}
       propertyPath: m_Layer
@@ -651,6 +651,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8246701537078675608, guid: 18727e5f643b97c4ab1543f09cabc2cd, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8275659244493253775, guid: 18727e5f643b97c4ab1543f09cabc2cd, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -667,7 +671,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6303033365381119495, guid: 18727e5f643b97c4ab1543f09cabc2cd, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 18727e5f643b97c4ab1543f09cabc2cd, type: 3}
 --- !u!1 &196274800
@@ -1916,7 +1921,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28034
+  m_Name: pb_Mesh28038
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
@@ -2152,7 +2157,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh28094
+  m_Name: pb_Mesh28098
   serializedVersion: 11
   m_SubMeshes:
   - serializedVersion: 2
