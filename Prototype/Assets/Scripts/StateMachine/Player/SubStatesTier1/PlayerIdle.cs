@@ -14,7 +14,7 @@ public class PlayerIdle : PlayerBaseState
         InitializeSubState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState() //stop all movement when the player is Teleporting.
     {
         CheckSwitchState();
         if(!_ctx.IsTeleporting)
@@ -27,7 +27,7 @@ public class PlayerIdle : PlayerBaseState
         _isActive = false;
     }
 
-    public override void InitializeSubState()
+    public override void InitializeSubState() //Initialize ability substates.
     {
         
         switch (true)
@@ -55,7 +55,7 @@ public class PlayerIdle : PlayerBaseState
         //SetSubState(_factory.Empty());
     }
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //Switch to the walk state.
     {
         if (_ctx.Moving)
         {
@@ -64,7 +64,7 @@ public class PlayerIdle : PlayerBaseState
         }
     }
 
-    private void StopMoving()
+    private void StopMoving() //Set move velocity to 0
     {
         if (_ctx.MoveVelocityX == 0 && _ctx.MoveVelocityZ == 0) return;
         _ctx.MoveVelocityX = 0;

@@ -11,7 +11,7 @@ public class PlayerGrounded : PlayerBaseState, IGravity
         _isRootState = true;
     }
 
-    public override void EnterState()
+    public override void EnterState() //sets up gravity and substates. 
     {
         _isActive = true;
         _ctx.IsJumping = false;
@@ -31,7 +31,7 @@ public class PlayerGrounded : PlayerBaseState, IGravity
         _isActive = false;
     }
 
-    public override void InitializeSubState()
+    public override void InitializeSubState() //initialize movement states.
     {
         switch (_ctx.Moving)
         {
@@ -47,7 +47,7 @@ public class PlayerGrounded : PlayerBaseState, IGravity
         }
     }
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //switch between jumping and falling states 
     {
         if (_ctx.Jumping && !_ctx.NewJumpRequired)
         {
@@ -57,13 +57,13 @@ public class PlayerGrounded : PlayerBaseState, IGravity
             SwitchState(_factory.Falling());
     }
 
-    public void HandleGravity()
+    public void HandleGravity() //applies gravity value
     {
         _ctx.MoveVelocityY = _ctx.Gravity;
         _ctx.AppliedMoveVelocityY = _ctx.Gravity;
     }
 
-    private void SetUpGravity()
+    private void SetUpGravity() //sets the gravity to grounded gravity. Minor velocity to the y-axis needed for character controller to properly utilise .IsGrounded
     {
         _ctx.Gravity = _groundedGravity;
     }

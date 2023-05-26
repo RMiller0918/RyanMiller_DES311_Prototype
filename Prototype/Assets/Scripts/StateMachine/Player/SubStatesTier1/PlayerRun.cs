@@ -17,23 +17,28 @@ public class PlayerRun : PlayerBaseState, IMoveable
         InitializeSubState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState() //player will only move in this state if they aren't already teleporting.
     {
         CheckSwitchState();
         if (_isSwitchingState)
         {
             return;
         }
-        if(!_ctx.IsTeleporting)
+
+        if (!_ctx.IsTeleporting)
+        {
+            Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 95, 5f * Time.deltaTime);
             Moving();
+        }
     }
 
-    public override void ExitState()
+    public override void ExitState() //return FOV to 90
     {
+        Camera.main.fieldOfView = 90;
         _isActive = false;
     }
 
-    public override void InitializeSubState()
+    public override void InitializeSubState() //Initialize the ability substates.
     {
         
         switch (true)
@@ -58,10 +63,9 @@ public class PlayerRun : PlayerBaseState, IMoveable
                 break;
         }
         
-        //SetSubState(_factory.Empty());
     }
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //Switch between idle and walking states
     {
         if (!_ctx.Sprinting && _ctx.Moving)
         {
@@ -75,10 +79,8 @@ public class PlayerRun : PlayerBaseState, IMoveable
         }
     }
 
-    public void Moving()
+    public void Moving() //Apply the move velocity vector based on Input and camera forward.
     {
-        if(_isSwitchingState)
-            Debug.Log("Moving After Switching");
         var move = (_ctx.transform.right * _ctx.MoveInput.x + _ctx.transform.forward * _ctx.MoveInput.y) * _moveSpeed;
         _ctx.MoveVelocityX = move.x;
         _ctx.MoveVelocityZ = move.z;

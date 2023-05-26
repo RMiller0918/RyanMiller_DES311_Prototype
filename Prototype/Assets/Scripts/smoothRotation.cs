@@ -3,8 +3,8 @@ using UnityEngine;
 public class smoothRotation: PlayerLook
 {
     [Header("Player Rotation Smooth Properties")] 
-    [SerializeField] private float _smoothTime;
-    [SerializeField] private Transform _horizontalRotationHelper;
+    private float _smoothTime;
+    private Transform _horizontalRotationHelper;
 
     private float _oldVertical;
     private float _vertAngularVelocity;

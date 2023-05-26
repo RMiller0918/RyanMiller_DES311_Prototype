@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class EnemyRun : EnemyBaseState
 {
-    public EnemyRun(EnemyStateMachine currentCotext, EnemyStateFactory enemyStateFactory)
-        : base(currentCotext, enemyStateFactory)
+    //not used. 
+    public EnemyRun(EnemyStateMachine currentContext, EnemyStateFactory enemyStateFactory)
+        : base(currentContext, enemyStateFactory)
     {
     }
 

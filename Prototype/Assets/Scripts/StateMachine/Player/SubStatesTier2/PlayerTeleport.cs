@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerTeleport : PlayerBaseState
@@ -14,151 +11,116 @@ public class PlayerTeleport : PlayerBaseState
     public PlayerTeleport(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory) { }
 
-    public override void EnterState()
+    public override void EnterState() //Play the initial animation and switch the Teleport UI Icon. 
     {
+        _ctx.TeleportIcon.SpriteChange(1);
         _isActive = true;
         _ctx.Animator.SetBool(_ctx.TeleportSetupHash, true);
         _finished = false;
         _ctx.IsTeleporting = false;
         _targetSet = false;
-        Debug.Log($"Entered Teleport State, Finished = {_finished}, Is Teleporting = {_ctx.IsTeleporting}");
     }
 
     public override void UpdateState()
     {
-        if ((_ctx.Lit || !_ctx.TeleportSetUp) && !_ctx.IsTeleporting)
+        if ((_ctx.Lit || !_ctx.TeleportSetUp) && !_ctx.IsTeleporting) //set the action to be finished if the player is Lit or the player lets go of Q, only do this if the player isn't already teleporting.
             _finished = true;
-        if (_finished)
+        var color = _ctx.TeleMarker.IsValid ? Color.green : Color.red; //Check the target location is valid and change marker colour.
+        _ctx.TeleMarker.SetColor(color);
+        if (_finished) //reset the time scale to 1 and switch back to empty state
         {
-            //Debug.Log(_ctx.IsTeleporting);
+            Time.timeScale = 1f;
             CheckSwitchState();
             return;
         }
 
-        if (!_targetSet)
+        if (!_targetSet) //if the target location hasn't been set, slow time and fire out a raycast.
         {
-            //Debug.Log(_ctx.IsTeleporting);
-            FireRay();
-        }
-        else if (_targetSet && !_ctx.IsTeleporting)
-        {
-            //Debug.Log(_ctx.IsTeleporting);
-            SetTeleport();
+            Time.timeScale = 0.1f;
+            Debug.Log(_targetSet);
+            var endPosition = FireRay();
+            return;
         }
 
-        if (_ctx.IsTeleporting)
+        if (_targetSet && !_ctx.IsTeleporting) //Set the teleport location
         {
-            //Debug.Log(_ctx.IsTeleporting);
+            SetTeleport();
+            return;
+        }
+
+        if (_ctx.IsTeleporting) //Teleport the player to the target location.
+        {
+            _ctx.TeleMarker.SetPosition(_targetLocation);
+            _ctx.CharCont.detectCollisions = false;
             Teleport();
         }
-
-
-        /*
-        switch (_ctx.IsTeleporting)
-        {
-            case true when !_finished:
-                Debug.Log($"Teleporting, {_ctx.IsTeleporting}, currently not finished {_finished}");
-                Teleport();
-                break;
-            case false when _targetSet && !_finished:
-                SetTeleport();
-                Debug.Log($"I've chosen a target Location {_targetLocation}, {_ctx.IsTeleporting}");
-                break;
-            case false when !_finished:
-                Debug.Log($"Picking target location, {_ctx.TeleMarker.IsValid}");
-                var color = _ctx.TeleMarker.IsValid ? Color.green : Color.red;
-                _ctx.TeleMarker.SetColor(color);
-                FireRay();
-                break;
-            case false when _finished:
-                Debug.Log($"Trying to switch out of the state {_finished}, no Longer teleporting {_ctx.IsTeleporting}");
-                CheckSwitchState();
-                break;
-        }
-        */
-
-
-
-        /*
-        CheckSwitchState();
-        if (_finished) return;
-        Debug.Log("Firing Ray");
-
-        switch (_ctx.Attacking)
-        {
-            case true when _ctx.TeleMarker.IsValid:
-                Teleport();
-                break;
-            default:
-                FireRay();
-                break;
-        }
-        */
     }
 
-    public override void ExitState()
+    public override void ExitState() //Return the Empty State. Initiate Repeat action blockers for Attacking and Teleporting if the player is still holding any of the corresponding buttons. Prevents player spamming abilities on exit. 
     {
+        _ctx.TeleportIcon.SpriteChange(0);
+        Camera.main.fieldOfView = 90;
         _ctx.Animator.SetBool(_ctx.TeleportSetupHash, false);
         _ctx.IsTeleporting = false;
         if (_ctx.Attacking)
             _ctx.NewAttackRequired = true;
         if (_ctx.TeleportSetUp)
             _ctx.NewTeleSetUpRequired = true;
-
+        _ctx.CharCont.detectCollisions = true;
         _isActive = false;
-        Debug.Log($"I need to release Q {_ctx.NewTeleSetUpRequired}, I need to Release LeftClick {_ctx.NewAttackRequired}");
     }
 
-    public override void InitializeSubState() { }
+    public override void InitializeSubState() { } //No other state layers
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //Can only switch back to the Empty state
     {
         SwitchState(_factory.Empty());
     }
 
-    private void FireRay()
+    /*
+     * Fires a ray from the camera.
+     * Set the end position to either the end of the ray or the point the ray hits an object.
+     * Check the teleport marker is in a valid location (Shadows) and if the player presses attack Set the target location. 
+     */
+
+    private Vector3 FireRay() 
     {
         var cameraTransform = Camera.main.transform;
         var position = cameraTransform.position;
         var endPosition = position + cameraTransform.forward * _range;
         var mask = LayerMask.GetMask("UI") | LayerMask.GetMask("Ignore Raycast");
         Physics.Raycast(position, cameraTransform.forward, out var hitInfo, _range, ~mask);
-
         endPosition = hitInfo.transform != null ? hitInfo.point : endPosition;
         _ctx.TeleMarker.SetPosition(endPosition);
-
-        if (_ctx.Attacking && !_targetSet)
+        if (_ctx.Attacking && !_targetSet && _ctx.TeleMarker.IsValid)
         {
             _targetLocation = endPosition;
             _targetSet = true;
         }
+
+        return endPosition;
     }
 
-    private void Teleport()
+    private void Teleport() //Move the player to the target location, Uses lerp instead of an straight location change. Makes the teleport feel less jarring. 
     {
-        _ctx.CharCont.detectCollisions = false;
         var distance = Vector3.Distance(_ctx.transform.position, _targetLocation);
-        distance = Mathf.Clamp(distance, 0.1f, 10);
         _ctx.CharCont.enabled = false;
-        _ctx.transform.position = Vector3.Lerp(_ctx.transform.position, _targetLocation, 5f);
-        Debug.Log($"{_ctx.transform.position}, {_targetLocation}");
-        if (_ctx.transform.position != _targetLocation)
-        {
-            return;
-        }
+        _ctx.transform.position = Vector3.Lerp(_ctx.transform.position, _targetLocation, (100 / (distance)) * Time.unscaledDeltaTime);
+        Camera.main.fieldOfView = Mathf.Lerp(Camera.main.fieldOfView, 100, 1 / distance * Time.unscaledDeltaTime);
+        if (distance > 0.5f) return;
         _ctx.CharCont.enabled = true;
         _finished = true;
         _ctx.IsTeleporting = false;
         _ctx.TeleMarker.ResetPosition();
     }
 
-    private void SetTeleport()
+    private void SetTeleport() //Plays the teleport animation and removes mana from the player, updating the MP bar. 
     {
+        if (_ctx.NewAttackRequired) return;
         _ctx.Animator.SetTrigger(_ctx.TeleportTriggerHash);
         _ctx.Mana -= 25;
         _ctx.Mana = Mathf.Clamp(_ctx.Mana, 0, _ctx.Mana);
         _ctx.MBar.UpdateHealthBar(_ctx.MaxMana, _ctx.Mana);
-        _direction = MoveDirection(_ctx.transform.position, _targetLocation);
         _ctx.IsTeleporting = true;
     }
 
