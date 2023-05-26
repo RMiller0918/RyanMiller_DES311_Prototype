@@ -17,7 +17,7 @@ public class PlayerWalk : PlayerBaseState, IMoveable
         InitializeSubState();
     }
 
-    public override void UpdateState()
+    public override void UpdateState() //the player will only move if they aren't already teleporting.
     {
         CheckSwitchState();
         if (_isSwitchingState)
@@ -33,7 +33,7 @@ public class PlayerWalk : PlayerBaseState, IMoveable
         _isActive = false;
     }
 
-    public override void InitializeSubState()
+    public override void InitializeSubState() //initializes the ability substates.
     {
         
         switch (true)
@@ -61,7 +61,7 @@ public class PlayerWalk : PlayerBaseState, IMoveable
         //SetSubState(_factory.Empty());
     }
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //switch between idle and running states
     {
         if (!_ctx.Moving)
         {
@@ -75,7 +75,7 @@ public class PlayerWalk : PlayerBaseState, IMoveable
         }
     }
 
-    public void Moving()
+    public void Moving() //set the movement velocity based on the camera rotation and player input. 
     {
         var move = (_ctx.transform.right * _ctx.MoveInput.x + _ctx.transform.forward * _ctx.MoveInput.y) * _moveSpeed;
         _ctx.MoveVelocityX = move.x;

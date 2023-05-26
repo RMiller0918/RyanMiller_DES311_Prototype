@@ -35,7 +35,7 @@ public class PlayerDefault : PlayerBaseState
     {
     }
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //Switch to the other ability states when conditions are met. Block repeating actions when needed.
     {
         if (_ctx.Attacking && !_ctx.NewAttackRequired && !_ctx.TeleportSetUp && !_ctx.PullEnemySetUp && !_ctx.Aiming)
         {

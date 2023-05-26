@@ -22,7 +22,7 @@ public class LookATCam : MonoBehaviour
 
         this.transform.rotation = Quaternion.LookRotation(camPos - pos);
     }
-
+    //Rotates an object to look at the camera.
     private Vector3 LockXZaxis(Vector3 vector)
     {
         vector.y = 0;

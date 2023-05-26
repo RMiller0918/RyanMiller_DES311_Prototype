@@ -1,5 +1,10 @@
 using UnityEngine;
 
+
+/// <summary>
+/// This state will heal the player only if they have less than full health.
+/// Will heal up to 75 max Health, but will exit early if the player has full health before adding the 75.
+/// </summary>
 public class PlayerHealing : PlayerBaseState
 {
     private float _healthReturn = 75;
@@ -7,7 +12,7 @@ public class PlayerHealing : PlayerBaseState
     public PlayerHealing(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory) { }
 
-    public override void EnterState()
+    public override void EnterState() //Remove mana from the player and add Health to the player. 
     {
         _ctx.Animator.SetTrigger(_ctx.HealTriggerHash);
         _ctx.Mana -= 65f;
@@ -21,13 +26,13 @@ public class PlayerHealing : PlayerBaseState
 
     public override void UpdateState()
     {
-        if (_ctx.Healing)
+        if (_ctx.Healing) //update the health bar
         {
             _ctx.Health = Mathf.Lerp(_ctx.Health, _newMaxHealth, 5f * Time.deltaTime);
             _ctx.Health = Mathf.Clamp(_ctx.Health, 0, _ctx.MaxHealth);
             _ctx.HBar.UpdateHealthBar(_ctx.MaxHealth, _ctx.Health);
         }
-        else if (!_ctx.Healing || _ctx.Health >= _newMaxHealth)
+        else if (!_ctx.Healing || _ctx.Health >= _newMaxHealth) //switch back to the empty state.
         {
             CheckSwitchState();
         }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 
+//Based on Hierarchical State Machine Tutorial by IHeartGameDev https://youtu.be/kV06GiJgFhc
 internal enum PlayerStates
 {
     idle,
@@ -21,7 +22,7 @@ public class PlayerStateFactory
     PlayerStateMachine _context;
     Dictionary<PlayerStates, PlayerBaseState> _states = new Dictionary<PlayerStates, PlayerBaseState>();
 
-    public PlayerStateFactory(PlayerStateMachine currentContext)
+    public PlayerStateFactory(PlayerStateMachine currentContext) //The State Factory for the player. Each state is stored in a dictionary to be called when needed. 
     {
         _context = currentContext;
         _states[PlayerStates.idle] = new PlayerIdle(_context, this);
@@ -99,6 +100,7 @@ public class PlayerStateFactory
     }
 }
 
+//Based on Hierarchical State Machine tutorial by IHeartGameDev https://youtu.be/kV06GiJgFhc
 internal enum EnemyStates
 {
     grounded,
@@ -116,9 +118,9 @@ internal enum EnemyStates
 public class EnemyStateFactory
 {
     EnemyStateMachine _context;
-    Dictionary<EnemyStates, EnemyBaseState> _states = new Dictionary<EnemyStates, EnemyBaseState>();
+    Dictionary<EnemyStates, EnemyBaseState> _states = new Dictionary<EnemyStates, EnemyBaseState>(); 
 
-    public EnemyStateFactory(EnemyStateMachine currentContext)
+    public EnemyStateFactory(EnemyStateMachine currentContext) //The State Factory for the enemy class. Each State stored in a dictionary to be called when needed.
     {
         _context = currentContext;
         _states[EnemyStates.grounded] = new EnemyGrounded(_context, this);

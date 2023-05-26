@@ -3,11 +3,14 @@ using UnityEngine;
 
 public class SpotlightScript : MonoBehaviour
 {
+
+    //Defunct Script. Replaced by Light Manager.
+
     private Transform _transform;
     private Light _light;
-    private float _outsideAngle;
-    private Vector3 _angleAxisUp;
-    private float _angleToObject;
+    public float _outsideAngle;
+    public Vector3 _angleAxisUp;
+    public float _angleToObject;
     private bool _inCone;
     private void Awake()
     {
@@ -27,7 +30,7 @@ public class SpotlightScript : MonoBehaviour
         DrawRays();
     }
 
-    private void DrawRays()
+    private void DrawRays() //Draws rays either side of the spotlight cone. Used for debug purposes.
     {
         var Ray = new Ray();
         Ray.origin = _transform.position;
@@ -37,7 +40,7 @@ public class SpotlightScript : MonoBehaviour
         Debug.DrawLine(Ray.origin, Ray.origin + Ray.direction * _light.range, Color.green);
     }
 
-    private bool CalculateDot(Transform oTransform)
+    private bool CalculateDot(Transform oTransform) //calculates the dot product between the light and an object in front of it.
     {
         var cosAngle = Vector3.Dot(
             (oTransform.position - _transform.position).normalized, _transform.forward);

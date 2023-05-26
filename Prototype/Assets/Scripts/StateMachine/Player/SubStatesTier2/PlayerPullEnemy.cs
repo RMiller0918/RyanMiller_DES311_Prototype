@@ -1,4 +1,3 @@
-using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerPullEnemy : PlayerBaseState
@@ -18,46 +17,53 @@ public class PlayerPullEnemy : PlayerBaseState
     public PlayerPullEnemy(PlayerStateMachine currentContext, PlayerStateFactory playerStateFactory)
         : base(currentContext, playerStateFactory) { }
 
-    public override void EnterState()
+    public override void EnterState() //Update the Shadow Pull UI Icon. Play initial animation
     {
+        _ctx.ShadowPullIcon.SpriteChange(1);
         _isActive = true;
         Debug.Log("Entered shadow pull state");
+        _ctx.Animator.SetBool(_ctx.TeleportSetupHash, true);
         _ctx.TeleMarker.ResetPosition();
         _mode = Mode.selectingTarget;
         _finished = false;
         chosenEnemy = null;
     }
 
-    public override void UpdateState()
+    public override void UpdateState() //check which mode the player is in and update accordingly.
     {
-        if (!_ctx.PullEnemySetUp)
+        Debug.Log($"Updating State");
+        if (!_ctx.PullEnemySetUp) //if the player releases E then finish the ability
             _finished = true;
         CheckSwitchState();
-        if (_finished)
+        if (_finished) //reset Teleport Marker
         {
+            Debug.Log("Finished shadow pull");
             _ctx.TeleMarker.ResetPosition();
             return;
         }
+
         var color = _ctx.TeleMarker.IsValid ? Color.green : Color.red;
-        _ctx.TeleMarker.SetColor(color);
-        switch (_ctx.Attacking)
+        switch (_ctx.Attacking) //check which mode the player is in when Left-Click is pressed. 
         {
             case true when (_mode == Mode.selectingLocation) && !_ctx.NewAttackRequired && _ctx.TeleMarker.IsValid:
                 TeleportTarget();
+                _ctx.TeleMarker.SetColor(color);
                 break;
             default:
                 FireRay();
+                _ctx.TeleMarker.SetColor(color);
                 break;
         }
     }
 
-    public override void ExitState()
+    public override void ExitState() //reset Icon, block repeating actions if corresponding controls are still pressed.
     {
         if (_ctx.Attacking)
             _ctx.NewAttackRequired = true;
         if (_ctx.PullEnemySetUp)
             _ctx.NewPullRequired = true;
         _ctx.TeleMarker.ResetPosition();
+        _ctx.ShadowPullIcon.SpriteChange(0);
         _isActive = false;
     }
 
@@ -65,22 +71,24 @@ public class PlayerPullEnemy : PlayerBaseState
     {
     }
 
-    public override void CheckSwitchState()
+    public override void CheckSwitchState() //switch to empty state.
     {
         if(_finished)
             SwitchState(_factory.Empty());
     }
 
-    private void SelectTarget(GameObject obj)
+    private void SelectTarget(GameObject obj) //selects the enemy target being teleported.
     {
         chosenEnemy = obj;
         _mode = Mode.selectingLocation;
         _ctx.NewAttackRequired = true;
         Debug.Log($"Target Selected {chosenEnemy.name}");
+        _ctx.ShadowPullIcon.SpriteChange(2);
     }
 
-    private void TeleportTarget()
+    private void TeleportTarget() //moves the target to the new location. unlike with player teleportation, this is instant and not lerped. 
     {
+        _ctx.Animator.SetTrigger(_ctx.TeleportTriggerHash);
         _ctx.Mana -= 25;
         _ctx.Mana = Mathf.Clamp(_ctx.Mana, 0, _ctx.MaxMana);
         _ctx.MBar.UpdateHealthBar(_ctx.MaxMana, _ctx.Mana);
@@ -92,7 +100,7 @@ public class PlayerPullEnemy : PlayerBaseState
         _finished = true;
     }
 
-    private void FireRay()
+    private void FireRay() //Fire a ray, first to determine the target character, Second to determine the target location. In both instances if the target or location are in light then they are invalid.
     {
         var mask = LayerMask.GetMask("Enemy") | LayerMask.GetMask("Environment");
         var cameraTransform = Camera.main.transform;
@@ -106,7 +114,9 @@ public class PlayerPullEnemy : PlayerBaseState
                 if (hitInfo.transform.tag != "Enemy") return;
                 if (hitInfo.transform.GetComponent<EnemyStateMachine>().Lit) return;
                 if (_ctx.Attacking)
+                {
                     SelectTarget(hitInfo.transform.gameObject);
+                }
                 break;
             case Mode.selectingLocation:
                 Physics.Raycast(position, cameraTransform.forward, out var hit, _range, mask);

@@ -1,5 +1,4 @@
-using UnityEngine;
-
+//Abstract base class for the all states.
 public abstract class BaseState
 {
     protected bool _isRootState = false;
@@ -11,6 +10,8 @@ public abstract class BaseState
     public abstract void CheckSwitchState();
     public abstract void InitializeSubState();
 }
+
+//The base state for the player states.
 public abstract class PlayerBaseState: BaseState
 {
     protected PlayerStateMachine _ctx;
@@ -35,11 +36,7 @@ public abstract class PlayerBaseState: BaseState
     public void ExitStates()
     {
         ExitState();
-        if (_currentSubState != null)
-        {
-            _currentSubState.ExitStates();
-            
-        }
+        _currentSubState?.ExitStates();
     }
 
     protected void SwitchState(PlayerBaseState newState)
@@ -69,16 +66,17 @@ public abstract class PlayerBaseState: BaseState
 
     }
 
-    protected void SetSubState(PlayerBaseState newSubState)
+    protected void SetSubState(PlayerBaseState newSubState) //after setting a substate, enter the substate. Needed to allow for all substates to be updated. only running UpdateStates means only the first 2 layers are updated correctly.
     {
         _currentSubState = newSubState;
         newSubState.SetSuperState(this);
-        if(!_currentSubState._isActive)
+        if(!_currentSubState._isActive) //isActive needed to prevent an issue where nothing would happen when the player tries to use ability states.
             newSubState.EnterState();
     }
 }
 
-public abstract class EnemyBaseState : BaseState
+//Abstract class for the Enemy States.
+public abstract class EnemyBaseState : BaseState 
 {
     protected EnemyStateMachine _ctx;
     protected EnemyStateFactory _factory;
@@ -95,20 +93,14 @@ public abstract class EnemyBaseState : BaseState
     public void UpdateStates()
     {
         UpdateState();
-        if (_currentSubState != null)
-        {
-            _currentSubState.UpdateStates();
-        }
+        _currentSubState?.UpdateStates();
     }
 
     //exit the state and any substates
     public void ExitStates()
     {
         ExitState();
-        if (_currentSubState != null)
-        {
-            _currentSubState.ExitStates();
-        }
+        _currentSubState?.ExitStates();
     }
 
     protected void SwitchState(EnemyBaseState newState)
@@ -116,13 +108,12 @@ public abstract class EnemyBaseState : BaseState
         //current state exits state
         ExitState();
 
-        //new state enters state
-        newState.EnterState();
 
         if (_isRootState)
         {
             _ctx.CurrentState = newState;
-
+            //new state enters state
+            newState.EnterState();
         }
         else if (_currentSuperState != null)
         {
@@ -138,10 +129,12 @@ public abstract class EnemyBaseState : BaseState
 
     }
 
-    protected void SetSubState(EnemyBaseState newSubState)
+    protected void SetSubState(EnemyBaseState newSubState) //Allows for More than 2 layers of states to be used at a time.
     {
         _currentSubState = newSubState;
         newSubState.SetSuperState(this);
+        if (!_currentSubState._isActive)
+            newSubState.EnterState();
     }
 
 }

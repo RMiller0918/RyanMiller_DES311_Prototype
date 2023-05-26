@@ -3,6 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Enemy Configuration",menuName = "Enemy Scriptable Object")]
 public class EnemyScriptableObject : ScriptableObject
 {
+    //Stores Enemy Data. Planned to be used to allow for enemy types.
     public enum EnemyType
     {
         Melee,

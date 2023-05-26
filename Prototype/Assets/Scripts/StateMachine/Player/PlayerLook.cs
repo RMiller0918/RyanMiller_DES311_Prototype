@@ -1,6 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+//Followed Unity3D Tutorial - Fixing First Person View Camera Stutter/Jitter Issue - Kamran Wali - https://youtu.be/hsoJLJ22GVA
 public class PlayerLook : MonoBehaviour
 {
     [Header("Components")]
@@ -33,60 +36,38 @@ public class PlayerLook : MonoBehaviour
     {
         _camera = GetComponentInChildren<Camera>().transform;
         _controls = new PlayerControls();
-
-        //_controls.MainControls.MouseX.performed += ctx => _mouseInput.x = ctx.ReadValue<float>();
-        //_controls.MainControls.MouseY.performed += ctx => _mouseInput.y = ctx.ReadValue<float>();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
-        _mouseInput.x = Mouse.current.delta.x.ReadValue() * Time.smoothDeltaTime;
-        _mouseInput.y = Mouse.current.delta.y.ReadValue() * Time.smoothDeltaTime;
+        _mouseInput.x = (Mouse.current.delta.x.ReadValue() * Time.smoothDeltaTime); //gets the current mouse delta for x/y axis.
+        _mouseInput.y = (Mouse.current.delta.y.ReadValue() * Time.smoothDeltaTime);
         Rotate();
     }
 
-    protected virtual void Rotate()
+    protected virtual void Rotate() //handles rotation
     {
         _oldVertical = _xRotation;
         _xRotation -= GetVerticalValue();
-        _xRotation = _xRotation <= -90f ? -90f : _xRotation >= _minViewDistance ? _minViewDistance : _xRotation;
-        //TurnPlayer(_mouseInput.x);
-        //TurnCamera(_mouseInput.y);
+        _xRotation = _xRotation <= -90f ? -90f : _xRotation >= _minViewDistance ? _minViewDistance : _xRotation; //clamps the x-rotation values.
         RotateVertical();
         RotateHorizontal();
     }
 
-    protected float GetVerticalValue() => _mouseInput.y * _ySensitivity;
-    protected float GetHorizontalValue() => _mouseInput.x * _xSensitivity;
-    protected virtual void RotateVertical()
+    protected float GetVerticalValue() => _mouseInput.y * _ySensitivity / Time.timeScale;
+    protected float GetHorizontalValue() => _mouseInput.x * _xSensitivity; //not scaled by time scale to prevent issue with oversensitivity in slow motion.
+    protected virtual void RotateVertical() //rotates the camera around the x-axis
     {
         _xRotation = Mathf.SmoothDampAngle(_oldVertical, _xRotation, ref _vertAngularVelocity, _smoothTime);
         _camera.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
     }
 
-    protected virtual void RotateHorizontal()
+    protected virtual void RotateHorizontal() //rotates the player around the y-axis.
     {
         _horizontalRotationHelper.Rotate(Vector3.up * GetHorizontalValue() , Space.Self);
         transform.localRotation = Quaternion.Euler(0f,
             Mathf.SmoothDampAngle(transform.localEulerAngles.y, _horizontalRotationHelper.localEulerAngles.y, ref _horiAngularVelocity, _smoothTime), 0f);
-        //transform.Rotate(Vector3.up * GetHorizontalValue());
     }
-
-
-    protected virtual void TurnPlayer(float deltaX) // for turning player left or right, Takes X input and rotates on Y axis.
-    {
-        deltaX = deltaX * _xSensitivity * Time.deltaTime;
-        transform.eulerAngles += new Vector3(0, deltaX, 0);
-        transform.Rotate(Vector3.up * deltaX);
-    }
-
-    protected virtual void TurnCamera(float deltaY) //for turning camera up or down, Takes Y input and rotates on the X axis.
-    {
-        _xRotation -= deltaY * _xSensitivity * Time.deltaTime;
-        _xRotation = Mathf.Clamp(_xRotation, -90f, _minViewDistance);
-        _camera.transform.localRotation = Quaternion.Euler(_xRotation, 0f,0f);
-    }
-
     private void OnEnable()
     {
         _controls.MainControls.Enable();
